@@ -186,16 +186,20 @@ section { margin-top: 40px; }
   width: 12px; height: 12px; border-radius: 50%;
   background: var(--surface); border: 2.5px solid var(--accent);
   box-shadow: 0 0 0 4px var(--paper);
+  transition: background .25s, border-color .25s;
 }
-.phase.depart::before { background: var(--accent); }
-.phase.arrive::before { border-color: var(--teal); }
+.phase.done::before { background: var(--teal); border-color: var(--teal); }
 .card {
   background: var(--surface); border: 1px solid var(--line);
   border-radius: var(--radius); padding: 6px 20px 8px; box-shadow: var(--shadow);
+  transition: background .25s, border-color .25s;
 }
-.phase-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; padding: 14px 0 4px; }
+.phase.done .card { background: var(--teal-soft); border-color: color-mix(in srgb, var(--teal) 35%, transparent); }
+.phase-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; padding: 14px 0 4px; cursor: pointer; user-select: none; }
+.phase-head::after { content: "▾"; font-size: 15px; color: var(--muted); margin-left: auto; transition: transform .2s; }
+.phase.collapsed .phase-head::after { transform: rotate(-90deg); }
+.phase.collapsed ul.checks { display: none; }
 .phase-date { font-family: var(--mono); font-size: 12px; font-weight:600; letter-spacing:.08em; color: var(--accent-ink); background: var(--accent-soft); padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
-.phase.arrive .phase-date { color: var(--teal-ink); background: var(--teal-soft); }
 .phase-title { font-size: 16.5px; font-weight: 750; }
 
 ul.checks { list-style: none; margin: 6px 0 12px; padding: 0; display:flex; flex-direction:column; }
@@ -248,7 +252,9 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 .tab-btn:hover { color: var(--ink-soft); }
 .tab-btn.active {
   color: var(--ink);
-  border-bottom-color: var(--accent);
+  border-bottom: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 8px 8px 0 0;
 }
 .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .tab-panel { display: none; }
@@ -256,7 +262,7 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 
 /* ---------- Country modules ---------- */
 .country { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow); margin-top: 0; }
-.country-top { padding: 18px 22px; border-bottom: 1px solid var(--line); }
+.country-top { padding: 18px 22px; }
 .country.th .country-top { background: linear-gradient(180deg, var(--accent-soft), transparent); }
 .country.vn .country-top { background: linear-gradient(180deg, var(--teal-soft), transparent); }
 .country.ge .country-top { background: linear-gradient(180deg, var(--blue-soft), transparent); }
@@ -290,7 +296,7 @@ dl.specs.compact dt { font-size: 10.5px; }
 dl.specs.compact dd { font-size: 13px; }
 
 /* ---------- Tab checklists ---------- */
-.tab-checklist { padding: 16px 22px 6px; border-top: 1px solid var(--line-soft); }
+.tab-checklist { padding: 16px 22px 6px; }
 .tab-checklist h4 {
   font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--muted); margin: 0 0 4px;
@@ -298,7 +304,7 @@ dl.specs.compact dd { font-size: 13px; }
 .tab-checklist.compact { padding: 8px 16px 4px; }
 .tab-checklist.compact h4 { font-size: 10px; }
 .tab-checklist ul.checks { margin: 0; }
-.tab-checklist ul.checks li { border-top: 1px solid var(--line-soft); }
+.tab-checklist ul.checks li { border-top: none; }
 
 /* ---------- CIS grid inside tab ---------- */
 .cis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }

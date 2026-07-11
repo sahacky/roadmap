@@ -57,7 +57,7 @@
 
   allBoxes.forEach(function (b, i) {
     if (saved["c" + i]) b.checked = true;
-    b.addEventListener("change", function () { persist(); updateProgress(); });
+    b.addEventListener("change", function () { persist(); updateProgress(); updatePhaseDone(); });
   });
 
   function persist() {
@@ -108,6 +108,19 @@
     if (pgBar) pgBar.style.width = (total ? (done / total * 100) : 0) + "%";
   }
 
+  // ---- Phase done: green when all checkboxes in a phase are checked ----
+  function updatePhaseDone() {
+    phases.forEach(function (phase) {
+      var inputs = phase.querySelectorAll("ul.checks input[type=checkbox]");
+      if (inputs.length === 0) return;
+      var allChecked = true;
+      for (var i = 0; i < inputs.length; i++) {
+        if (!inputs[i].checked) { allChecked = false; break; }
+      }
+      phase.classList.toggle("done", allChecked);
+    });
+  }
+
   var resetBtn = document.getElementById("reset");
   if (resetBtn) {
     resetBtn.addEventListener("click", function () {
@@ -115,10 +128,30 @@
       allBoxes.forEach(function (b) { b.checked = false; });
       try { localStorage.removeItem(CHECK_KEY); } catch (e) {}
       updateProgress();
+      updatePhaseDone();
     });
   }
 
+  var phases = document.querySelectorAll(".timeline .phase");
+
   updateProgress();
+  updatePhaseDone();
+
+  // ---- Collapsible timeline phases ----
+  var PHASE_KEY = "reloc-collapsed-v1";
+  var collapsed = {};
+  try { collapsed = JSON.parse(localStorage.getItem(PHASE_KEY) || "{}"); } catch (e) { collapsed = {}; }
+
+  phases.forEach(function (phase, i) {
+    var head = phase.querySelector(".phase-head");
+    if (!head) return;
+    if (collapsed["p" + i]) phase.classList.add("collapsed");
+    head.addEventListener("click", function () {
+      phase.classList.toggle("collapsed");
+      collapsed["p" + i] = phase.classList.contains("collapsed") ? 1 : 0;
+      try { localStorage.setItem(PHASE_KEY, JSON.stringify(collapsed)); } catch (e) {}
+    });
+  });
 
   // ---- Countdown ----
   function countdown() {
