@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Роадмап релокации · Россия → ЮВА</title>
+  <meta name="description" content="Пошаговый план выезда из России на 4–6 месяцев: Пхукет и Дананг. Чек-листы, счётчик дней до вылета, сравнение направлений.">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#F7F9F7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14262B" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="eyebrow">План вылета · Россия → Юго-Восточная Азия</div>
+        <h1>Роадмап релокации на&nbsp;4–6&nbsp;месяцев</h1>
+        <p class="hero-sub">Пошаговый план от подготовки до вылета и первой недели на&nbsp;месте. Два направления на&nbsp;выбор: <b>Пхукет</b> (Таиланд) и&nbsp;<b>Дананг</b> (Вьетнам). Удалённая работа в&nbsp;IT сохраняется, доход&nbsp;идёт.</p>
+      </div>
+      <div class="hero-aside">
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему">
+          <span class="ic" aria-hidden="true">☾</span><span class="lbl">Тёмная</span>
+        </button>
+        <div class="countdown">
+          <div class="num" id="cd-num">—</div>
+          <div class="lbl">дней до вылета</div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-meta"><span>Готовность к&nbsp;вылету</span><span><b id="pg-done">0</b> / <span id="pg-total">0</span> пунктов</span></div>
+      <div class="track"><div class="bar" id="pg-bar"></div></div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="tile">
+      <div class="k">Окно вылета</div>
+      <div class="v">10–15 авг</div>
+      <div class="d">август — самый дешёвый месяц в&nbsp;Азию</div>
+    </div>
+    <div class="tile">
+      <div class="k">Бюджет на&nbsp;жизнь</div>
+      <div class="v">~$1 750 / мес</div>
+      <div class="d">≈135k ₽ · ~$3 100 при закрытом ремонте (вар.&nbsp;4)</div>
+    </div>
+    <div class="tile">
+      <div class="k">Курс USD/RUB</div>
+      <div class="v" id="usd-rate">76,40 ₽</div>
+      <div class="d" id="rate-date">данные open.er-api.com · обновление раз в&nbsp;час</div>
+    </div>
+    <div class="tile">
+      <div class="k">Загранпаспорт</div>
+      <div class="v">10&nbsp;лет ✓</div>
+      <div class="d">биометрический, оформлен свежим</div>
+    </div>
+  </div>
+
+  <div class="critical">
+    <div class="mk">Критично</div>
+    <p><b>Самый узкий узел — не виза, а деньги.</b> Российские Visa/Mastercard в&nbsp;Азии не&nbsp;работают. Платёжный контур (наличные&nbsp;USD + USDT + карта дружественного финтеха) надо начать собирать <b>в&nbsp;первые дни</b> — он готовится дольше всего. Билеты и&nbsp;визы проще.</p>
+  </div>
+
+  <!-- ==================== ТАЙМЛАЙН (общие задачи) ==================== -->
+  <section>
+    <div class="sec-head">
+      <h2>Дорожная карта по&nbsp;неделям</h2>
+      <span class="hint">отмечай галочками — прогресс сохраняется в&nbsp;браузере</span>
+    </div>
+
+    <div class="timeline" id="timeline">
+
+      <div class="phase">
+        <div class="card">
+          <div class="phase-head">
+            <span class="phase-date">11–13 июля · Неделя 0</span>
+            <span class="phase-title">«Можно ли ехать» + запуск денег</span>
+          </div>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">выезд</span>Проверить долги в&nbsp;ФССП и&nbsp;реестр повесток<small>fssp.gov.ru + Госуслуги. Офицер запаса кат.&nbsp;А, но подтвердить, что ограничения на&nbsp;выезд нет</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить загран: 2+&nbsp;пустые страницы, срок&nbsp;ОК<small>10&nbsp;лет — запаса хватит на&nbsp;всё</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">деньги</span>Решить платёжный контур: наличные&nbsp;USD (до&nbsp;$10k без декларации) + USDT-кошелёк + карта иностранного финтеха<small>это готовится дольше всего — стартуем сразу</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить первую партию USDT (биржа/P2P) и&nbsp;перевести в&nbsp;свой кошелёк</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Начать подбор медстраховки на&nbsp;6&nbsp;месяцев<small>Cherehapa и&nbsp;аналоги; для Малайзии/ВНЖ страховка обязательна</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="card">
+          <div class="phase-head">
+            <span class="phase-date">14–20 июля · Неделя 1</span>
+            <span class="phase-title">Логистика · связь · жильё</span>
+          </div>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">логистика</span>Заложить трансфер Ростов→Москва<small>аэропорт Платов закрыт: Сапсан/поезд или вылет через Минводы. +1&nbsp;день</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить eSIM (Airalo) на&nbsp;прилёт + оплатить VPN заранее</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Бронь жилья на&nbsp;первые 10–14&nbsp;дней<small>Agoda/Booking, оплата картой хаба или через сервис-посредник</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="card">
+          <div class="phase-head">
+            <span class="phase-date">21 июля – 3 авг · Недели 2–3</span>
+            <span class="phase-title">Документы · дубли · тыл</span>
+          </div>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Копии всех документов в&nbsp;облако<small>загран, военный билет, права, свидетельства</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Сохранить российский номер (нужен для банков и&nbsp;Госуслуг)<small>роуминг / eSIM / переоформить на&nbsp;родных</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить доступ к&nbsp;росбанкам и&nbsp;Госуслугам через VPN из-за границы</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Настроить автоплатёж по&nbsp;ипотеке<small>45к ₽/мес идут независимо от&nbsp;отъезда</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">работа</span>Согласовать с&nbsp;работодателем работу из-за границы<small>проверить, что созвон 11–17&nbsp;МСК ложится в&nbsp;12:00–18:00 местного</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Международные права (IDP), если планируешь байк/авто<small>в&nbsp;Азии основной транспорт — скутер</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Аптечка + запас личных лекарств + рецепты на&nbsp;латинице</span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase depart">
+        <div class="card">
+          <div class="phase-head">
+            <span class="phase-date">4–10 авг · Неделя 4</span>
+            <span class="phase-title">Финал и&nbsp;вылет</span>
+          </div>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Финальная закупка валюты (наличные&nbsp;USD)</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag both">на границе</span>На руках: виза/разрешение, бронь жилья, обратный или onward-билет<small>подтверждение выезда спрашивают на&nbsp;паспортном контроле</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Трансфер Ростов→Москва, вылет</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Вылет 10–15&nbsp;августа</span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase arrive">
+        <div class="card">
+          <div class="phase-head">
+            <span class="phase-date">На месте · первая неделя</span>
+            <span class="phase-title">Приземление и&nbsp;обустройство</span>
+          </div>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Локальная симка</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">деньги</span>Вывод денег: USDT → наличные через локальные обменники/P2P</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Долгосрочное жильё на&nbsp;1–3&nbsp;месяца, заселение</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Вписаться в&nbsp;Telegram-чаты релокантов</span></label></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== НАПРАВЛЕНИЯ (табы) ==================== -->
+  <section>
+    <div class="sec-head">
+      <h2>Направления</h2>
+      <span class="hint">выбери вкладку — цены в&nbsp;долларах</span>
+    </div>
+
+    <div class="tabs" id="country-tabs">
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="phuket">🇹🇭 Пхукет</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="danang">🇻🇳 Дананг</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="georgia">🇬🇪 Грузия</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="armenia">🇦🇲 Армения</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="cis">🚗 СНГ</button>
+      </nav>
+
+      <!-- ====== ПХУКЕТ ====== -->
+      <div class="tab-panel active" id="tab-phuket" role="tabpanel">
+        <div class="country th">
+          <div class="country-top">
+            <div class="flag">🇹🇭 Таиланд</div>
+            <h3>Пхукет</h3>
+            <div class="price">$1 300–1 800 / мес <span class="price-rub" data-usd="1300" data-usd-max="1800"></span></div>
+          </div>
+          <dl class="specs">
+            <div><dt>Виза</dt><dd><b>60 дн безвиз + 30</b> = 90 дней, далее визаран. DTV (5&nbsp;лет) — цель на&nbsp;потом</dd></div>
+            <div><dt>Пояс</dt><dd>МСК+4 → работа <b>15:00–21:00</b> местного ✓</dd></div>
+            <div><dt>Перелёт</dt><dd><b>Прямой</b> Аэрофлот Москва→Бангкок ~$450–670 + внутренний до&nbsp;HKT</dd></div>
+            <div><dt>Сильные стороны</dt><dd>Максимум инфраструктуры для релокантов, огромное рус.&nbsp;комьюнити, море</dd></div>
+            <div><dt>Слабые</dt><dd>Дороже Вьетнама; без депозита пока только визаран-цикл</dd></div>
+          </dl>
+        </div>
+        <div class="tab-checklist">
+          <h4>Чек-лист · Пхукет</h4>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить прямой Аэрофлот Москва→Бангкок (~$450–670) + внутренний до&nbsp;Пхукета (HKT)<small>~10 ч до BKK, август — минимальные цены</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить <b>TDAC</b> за 72 ч до прилёта<small>онлайн-анкета, продление +30 дней — в иммиграции на месте</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Спланировать продление визы +30 ивизаран после 90 дней<small>ближайший визаран — Малайзия / Камбоджа / Филиппины</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Через 3–4 мес (ремонт закрыт) — копить 500 000 THB (~$15k) на DTV-визу (5 лет)<small>переход с визаран-цикла на долгий статус — вариант 4</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ====== ДАНАНГ ====== -->
+      <div class="tab-panel" id="tab-danang" role="tabpanel">
+        <div class="country vn">
+          <div class="country-top">
+            <div class="flag">🇻🇳 Вьетнам</div>
+            <h3>Дананг</h3>
+            <div class="price">$800–1 100 / мес <span class="price-rub" data-usd="800" data-usd-max="1100"></span></div>
+          </div>
+          <dl class="specs">
+            <div><dt>Виза</dt><dd><b>e-visa 90 дн</b> ($25) или безвиз 45 дн <b>без «правила паузы»</b> — можно сразу назад</dd></div>
+            <div><dt>Пояс</dt><dd>МСК+4 → работа <b>15:00–21:00</b> местного ✓</dd></div>
+            <div><dt>Перелёт</dt><dd>С пересадкой (прямых из Москвы нет), ~$400–700</dd></div>
+            <div><dt>Сильные стороны</dt><dd>Заметно дешевле, простой визаран, быстрый интернет, море</dd></div>
+            <div><dt>Слабые</dt><dd>Полноценного ВНЖ нет — только визаран-цикл; медицина слабее</dd></div>
+          </dl>
+        </div>
+        <div class="tab-checklist">
+          <h4>Чек-лист · Дананг</h4>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Дананг с пересадкой (~$400–700)<small>стыковка через Бангкок/Ближний Восток; сравнить с прилётом в Ханой + внутренний</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить <b>e-visa на 90 дней</b> ($25, 3–7 дней)<small>или безвиз 45 дней для короткого пребывания</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Спланировать визаран (без «правила паузы» — можно сразу вернуться)<small>ближайшие: Лаос, Камбоджа</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ====== ГРУЗИЯ ====== -->
+      <div class="tab-panel" id="tab-georgia" role="tabpanel">
+        <div class="country ge">
+          <div class="country-top">
+            <div class="flag">🇬🇪 Грузия</div>
+            <h3>Тбилиси</h3>
+            <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
+          </div>
+          <dl class="specs">
+            <div><dt>Добираться</dt><dd><b>На машине через КПП Верхний Ларс</b> (Сев. Осетия) — самолёт не нужен. Очереди бывают, зимой/летом пик</dd></div>
+            <div><dt>Документы</dt><dd><b>Загранпаспорт обязателен</b>, внутренний не принимают</dd></div>
+            <div><dt>Виза</dt><dd><b>Безвиз до 365 дней</b> (90 дней если на машине). Продление на месте</dd></div>
+            <div><dt>Пояс</dt><dd>МСК+1 (UTC+4) → работа <b>12:00–18:00</b> местного — идеально ✓</dd></div>
+            <div><dt>Валюта</dt><dd>лари (GEL), 1 GEL ≈ $0.38 (~29 ₽)</dd></div>
+            <div><dt>Сильные стороны</dt><dd>Дёшево, красивая природа, вкусная еда, мягкий климат, хороший интернет, МСК+1</dd></div>
+            <div><dt>Слабые</dt><dd>Нужен загран; посещение Абхазии/Юж. Осетии через РФ — могут не пустить обратно в Грузию</dd></div>
+          </dl>
+        </div>
+        <div class="tab-checklist">
+          <h4>Чек-лист · Грузия</h4>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить статус очереди на Верхнем Ларсе<small>сайт МВД РО, пик — лето и праздники</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Убедиться загранпаспорт действует 6+ месяцев</span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Тбилиси на первые дни<small>Booking / Airbnb</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять с собой наличные USD или GEL (обменяешь на месте)<small>в Тбилиси много обменников, курс нормальный</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ====== АРМЕНИЯ ====== -->
+      <div class="tab-panel" id="tab-armenia" role="tabpanel">
+        <div class="country am">
+          <div class="country-top">
+            <div class="flag">🇦🇲 Армения</div>
+            <h3>Ереван</h3>
+            <div class="price">$500–850 / мес <span class="price-rub" data-usd="500" data-usd-max="850"></span></div>
+          </div>
+          <dl class="specs">
+            <div><dt>Добираться</dt><dd><b>Только самолётом</b> (сухопутной границы с РФ нет; через Грузию — нужен загран). Прямые рейсы из Москвы, ~$150–300</dd></div>
+            <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран <b>не нужен</b></dd></div>
+            <div><dt>Виза</dt><dd><b>Безвиз до 180 дней</b> в году</dd></div>
+            <div><dt>Пояс</dt><dd>МСК+1 (UTC+4) → работа <b>12:00–18:00</b> местного — идеально ✓</dd></div>
+            <div><dt>Валюта</dt><dd>драм (AMD), 1 AMD ≈ $0.0027 (~0.21 ₽)</dd></div>
+            <div><dt>Сильные стороны</dt><dd>Дёшево, вкусная еда, богатая история, загран не нужен, МСК+1, прямые рейсы</dd></div>
+            <div><dt>Слабые</dt><dd>Только самолётом; нет моря; интернет чутка медленнее</dd></div>
+          </dl>
+        </div>
+        <div class="tab-checklist">
+          <h4>Чек-лист · Армения</h4>
+          <ul class="checks">
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Ереван (~$150–300)<small>прямые рейсы: FlyOne, Armenia Aircompany, Победа</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Ереване на первые дни<small>Booking / Airbnb, район Абовяна/Туманяна</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять наличные USD (обменяешь на драм на месте)<small>обменники везде, курс хороший</small></span></label></li>
+            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Скачать карту offline (2GIS / Maps.me)<small>интернет бывает медленным за городом</small></span></label></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ====== СНГ ====== -->
+      <div class="tab-panel" id="tab-cis" role="tabpanel">
+        <div class="cis-grid">
+
+          <!-- Абхазия -->
+          <div class="cis-card">
+            <div class="cis-head">
+              <span class="cis-flag">🇦🇧</span>
+              <div>
+                <div class="cis-name">Абхазия</div>
+                <div class="cis-price">~$200–450 / мес <span class="price-rub" data-usd="200" data-usd-max="450"></span></div>
+              </div>
+            </div>
+            <dl class="specs compact">
+              <div><dt>Добираться</dt><dd>На машине/поезде через Адлер (КПП Псоу) — <b>без самолёта</b></dd></div>
+              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
+              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
+              <div><dt>Валюта</dt><dd>рубль (RUB)</dd></div>
+              <div><dt>Важно</dt><dd>Посещение Абхазии через РФ — могут не пустить в Грузию</dd></div>
+            </dl>
+            <div class="tab-checklist compact">
+              <ul class="checks">
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут через Адлер / КПП Псоу<small>стоять в очереди 2–8 ч, взять воды и еду</small></span></label></li>
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё (Гагра / Сухуми)<small>Авито Абхазия или напрямую</small></span></label></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Беларусь -->
+          <div class="cis-card">
+            <div class="cis-head">
+              <span class="cis-flag">🇧🇾</span>
+              <div>
+                <div class="cis-name">Беларусь</div>
+                <div class="cis-price">~$450–750 / мес <span class="price-rub" data-usd="450" data-usd-max="750"></span></div>
+              </div>
+            </div>
+            <dl class="specs compact">
+              <div><dt>Добираться</dt><dd>Поезд (Сапсан Москва→Минск) или машина по М1 — <b>без самолёта</b></dd></div>
+              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
+              <div><dt>Виза</dt><dd>Союзное государство — без ограничений по сроку</dd></div>
+              <div><dt>Валюта</dt><dd>бел. рубль (BYN), 1 BYN ≈ $0.35 (~27 ₽)</dd></div>
+              <div><dt>Плюсы</dt><dd>Близко, русский язык, привычная инфраструктура</dd></div>
+            </dl>
+            <div class="tab-checklist compact">
+              <ul class="checks">
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Сапсан Москва→Минск или планировать маршрут на машине</span></label></li>
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Минске<small>Booking / Купибилет</small></span></label></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Казахстан -->
+          <div class="cis-card">
+            <div class="cis-head">
+              <span class="cis-flag">🇰🇿</span>
+              <div>
+                <div class="cis-name">Казахстан</div>
+                <div class="cis-price">~$400–700 / мес <span class="price-rub" data-usd="400" data-usd-max="700"></span></div>
+              </div>
+            </div>
+            <dl class="specs compact">
+              <div><dt>Добираться</dt><dd>На машине через Оренбург/Астрахань или поездом — <b>без самолёта</b></dd></div>
+              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
+              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
+              <div><dt>Валюта</dt><dd>тенге (KZT), 1 KZT ≈ $0.0021 (~0.16 ₽)</dd></div>
+              <div><dt>Плюсы</dt><dd>Близко, русский распространён, дёшево</dd></div>
+            </dl>
+            <div class="tab-checklist compact">
+              <ul class="checks">
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут: Оренбург → Орск → Алматы или Астрахань → Атырау<small>граница, документы на авто</small></span></label></li>
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Алматы / Астане<small>Avito.kz, Купилайв</small></span></label></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Кыргызстан -->
+          <div class="cis-card">
+            <div class="cis-head">
+              <span class="cis-flag">🇰🇬</span>
+              <div>
+                <div class="cis-name">Кыргызстан</div>
+                <div class="cis-price">~$200–500 / мес <span class="price-rub" data-usd="200" data-usd-max="500"></span></div>
+              </div>
+            </div>
+            <dl class="specs compact">
+              <div><dt>Добираться</dt><dd>На машине через Казахстан (~3000 км) или самолётом</dd></div>
+              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
+              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
+              <div><dt>Валюта</dt><dd>сом (KGS), 1 KGS ≈ $0.011 (~0.88 ₽)</dd></div>
+              <div><dt>Плюсы</dt><dd>Природа (Иссык-Куль), дёшево, русский язык</dd></div>
+            </dl>
+            <div class="tab-checklist compact">
+              <ul class="checks">
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут через Казахстан (Ташкент → Бишкек) или прямой рейс<small>из Москвы есть рейсы</small></span></label></li>
+                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Бишкеке / на Иссык-Куле<small>Avito.kg, Booking</small></span></label></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== ОПОРНЫЕ БЛОКИ ==================== -->
+  <section>
+    <div class="sec-head"><h2>Опорные блоки</h2></div>
+    <div class="infogrid">
+      <div class="info">
+        <h3><span class="dot"></span>Платёжный контур — 3 опоры</h3>
+        <ul>
+          <li><b>Наличные USD</b> — до $10 000 вывозится без декларации</li>
+          <li><b>USDT</b> — вывод в наличные через локальные обменники / P2P на месте</li>
+          <li><b>Карта дружественного финтеха</b> — для онлайн-оплат и броней</li>
+          <li>Российские Visa/Mastercard за границей <b>не работают</b> — держи это ядром плана</li>
+        </ul>
+      </div>
+      <div class="info teal">
+        <h3><span class="dot"></span>Стратегия «после 6 месяцев»</h3>
+        <ul>
+          <li><b>Таиланд:</b> накопить 500k THB (~$15k) → перейти на DTV (5 лет)</li>
+          <li><b>Продлить</b> визаран-цикл или сменить страну (Филиппины / Малайзия в резерве)</li>
+          <li><b>Налоги:</b> вылет в августе — вне РФ &lt;183 дней за 2026 год, налоговое резидентство РФ сохраняется</li>
+        </ul>
+      </div>
+      <div class="info">
+        <h3><span class="dot"></span>Кто и что помогает</h3>
+        <ul>
+          <li>Telegram-чаты релокантов: Пхукет, Дананг, Нячанг</li>
+          <li>Миграционные агенты на месте (продления, визараны, DTV)</li>
+          <li>Инструменты: <span class="pill">Airalo eSIM</span><span class="pill">Agoda</span><span class="pill">Cherehapa</span><span class="pill">P2P-обменники</span></li>
+        </ul>
+      </div>
+      <div class="info teal">
+        <h3><span class="dot"></span>Резервное направление</h3>
+        <ul>
+          <li><b>Филиппины (Себу):</b> английский — госязык, есть DNV (~$24k/год), дёшево</li>
+          <li>Минусы: пояс МСК+5 (работа до 22:00), нет прямых рейсов, сезон тайфунов</li>
+          <li>Удобно как <b>страна для визарана</b> из Таиланда — заодно посмотришь</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-row">
+      <span>Данные по визам, ценам и рейсам сверены на июль 2026 г. и могут меняться — подтверждай перед покупкой билетов и подачей на визу. Курсы валют обновляются автоматически.</span>
+      <span class="footer-row" style="gap:12px;">
+        <span class="sw-badge" id="sw-badge" hidden>офлайн-режим готов</span>
+        <button class="reset" id="reset" type="button">Сбросить галочки</button>
+      </span>
+    </div>
+  </footer>
+</div>
+
+<script src="./app.js" defer></script>
+</body>
+</html>

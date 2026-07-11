@@ -1,0 +1,20 @@
+{
+  "name": "Роадмап релокации · Россия → ЮВА",
+  "short_name": "Роадмап",
+  "description": "Пошаговый план выезда из России на 4–6 месяцев: Пхукет и Дананг.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0D191D",
+  "theme_color": "#14262B",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

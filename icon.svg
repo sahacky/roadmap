@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Роадмап релокации">
+  <rect width="512" height="512" rx="112" fill="#CF7320"/>
+  <g transform="rotate(45 256 256)">
+    <path d="M256 96 C256 96 300 150 300 250 L300 340 L340 372 L340 404 L262 380 L256 380 L250 380 L172 404 L172 372 L212 340 L212 250 C212 150 256 96 256 96 Z"
+          fill="#FEFFFE"/>
+    <path d="M240 388 L272 388 L272 424 L256 440 L240 424 Z" fill="#FEFFFE"/>
+    <circle cx="256" cy="210" r="20" fill="#CF7320"/>
+  </g>
+</svg>
