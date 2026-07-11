@@ -261,6 +261,10 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 .country.vn .country-top { background: linear-gradient(180deg, var(--teal-soft), transparent); }
 .country.ge .country-top { background: linear-gradient(180deg, var(--blue-soft), transparent); }
 .country.am .country-top { background: linear-gradient(180deg, var(--rose-soft), transparent); }
+.country.ph .country-top { background: linear-gradient(180deg, #DCE8F5, transparent); }
+.country.py .country-top { background: linear-gradient(180deg, #F6E7D3, transparent); }
+.country.br .country-top { background: linear-gradient(180deg, #DFEDE9, transparent); }
+.country.ar .country-top { background: linear-gradient(180deg, #F8DEE3, transparent); }
 .country h3 { font-size: 19px; font-weight: 800; }
 .country .flag { font-family: var(--mono); font-size: 12px; letter-spacing:.1em; text-transform:uppercase; color: var(--muted); margin-bottom: 4px; }
 .country .price { font-family: var(--mono); font-weight: 700; font-size: 15px; margin-top: 8px; }
@@ -268,6 +272,10 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 .country.vn .price { color: var(--teal-ink); }
 .country.ge .price { color: var(--blue-ink); }
 .country.am .price { color: var(--rose-ink); }
+.country.ph .price { color: var(--blue-ink); }
+.country.py .price { color: var(--accent-ink); }
+.country.br .price { color: var(--teal-ink); }
+.country.ar .price { color: var(--rose-ink); }
 .price-rub { font-weight: 400; font-size: 13px; color: var(--muted); }
 dl.specs { margin: 0; padding: 8px 22px 18px; }
 dl.specs > div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line-soft); }
