@@ -37,29 +37,69 @@
 
   // ---- Checkboxes: state + progress ----
   var CHECK_KEY = "reloc-checks-v2";
-  var boxes = [];
+  var allBoxes = [];
+  var timelineSection = document.getElementById("timeline-section");
+  var timelineBoxes = [];
+  var tabBoxes = {};
+
+  // Collect all checkboxes
   var list = document.querySelectorAll("ul.checks input[type=checkbox]");
-  for (var i = 0; i < list.length; i++) { boxes.push(list[i]); }
+  for (var i = 0; i < list.length; i++) {
+    allBoxes.push(list[i]);
+    list[i].dataset.id = "c" + i;
+    if (timelineSection && timelineSection.contains(list[i])) {
+      timelineBoxes.push(list[i]);
+    }
+  }
 
   var saved = {};
   try { saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}"); } catch (e) { saved = {}; }
 
-  boxes.forEach(function (b, i) {
-    b.dataset.id = "c" + i;
+  allBoxes.forEach(function (b, i) {
     if (saved["c" + i]) b.checked = true;
     b.addEventListener("change", function () { persist(); updateProgress(); });
   });
 
   function persist() {
     var out = {};
-    boxes.forEach(function (b) { if (b.checked) out[b.dataset.id] = 1; });
+    allBoxes.forEach(function (b) { if (b.checked) out[b.dataset.id] = 1; });
     try { localStorage.setItem(CHECK_KEY, JSON.stringify(out)); } catch (e) {}
   }
 
+  // Collect checkboxes per tab panel
+  function collectTabBoxes() {
+    var panels = document.querySelectorAll(".tab-panel");
+    for (var i = 0; i < panels.length; i++) {
+      var id = panels[i].id.replace("tab-", "");
+      var boxes = [];
+      var inputs = panels[i].querySelectorAll("ul.checks input[type=checkbox]");
+      for (var j = 0; j < inputs.length; j++) { boxes.push(inputs[j]); }
+      tabBoxes[id] = boxes;
+    }
+  }
+  collectTabBoxes();
+
+  function getActiveTabId() {
+    var active = document.querySelector(".tab-btn.active");
+    return active ? active.dataset.tab : null;
+  }
+
   function updateProgress() {
-    var done = 0;
-    for (var i = 0; i < boxes.length; i++) { if (boxes[i].checked) done++; }
-    var total = boxes.length;
+    var done = 0, total = 0;
+    // Always count timeline
+    for (var i = 0; i < timelineBoxes.length; i++) {
+      total++;
+      if (timelineBoxes[i].checked) done++;
+    }
+    // Count only active tab
+    var activeId = getActiveTabId();
+    if (activeId && tabBoxes[activeId]) {
+      var ab = tabBoxes[activeId];
+      for (var j = 0; j < ab.length; j++) {
+        total++;
+        if (ab[j].checked) done++;
+      }
+    }
     var pgDone = document.getElementById("pg-done");
     var pgTotal = document.getElementById("pg-total");
     var pgBar = document.getElementById("pg-bar");
@@ -72,7 +112,7 @@
   if (resetBtn) {
     resetBtn.addEventListener("click", function () {
       if (!confirm("\u0421\u043d\u044f\u0442\u044c \u0432\u0441\u0435 \u0433\u0430\u043b\u043e\u0447\u043a\u0438?")) return;
-      boxes.forEach(function (b) { b.checked = false; });
+      allBoxes.forEach(function (b) { b.checked = false; });
       try { localStorage.removeItem(CHECK_KEY); } catch (e) {}
       updateProgress();
     });
@@ -185,6 +225,7 @@
           btn.setAttribute("aria-selected", "true");
           var panel = document.getElementById("tab-" + tab);
           if (panel) panel.classList.add("active");
+          updateProgress();
         });
       })(btns[t]);
     }
