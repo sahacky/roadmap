@@ -231,15 +231,12 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 /* ---------- Tabs ---------- */
 .tabs { margin-top: 0; }
 .tab-nav {
-  display: flex; gap: 0; flex-wrap: nowrap; overflow-x: auto;
+  display: flex; gap: 0; flex-wrap: wrap;
   border-bottom: 2px solid var(--line);
   padding-bottom: 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
 }
-.tab-nav::-webkit-scrollbar { display: none; }
 .tab-btn {
-  font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
   font-weight: 600; padding: 10px 16px;
   border: none;
   border-bottom: 2.5px solid transparent;
@@ -249,19 +246,34 @@ input:checked ~ .chk-txt small { text-decoration: none; }
   white-space: nowrap;
   margin-bottom: -2px;
 }
+.tab-btn { position: relative; display: inline-flex; align-items: center; gap: 5px; }
+.tab-btn .flag-img { width: 20px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px var(--line); object-fit: cover; flex-shrink: 0; }
+.tab-btn .cis-icon { font-size: 14px; line-height: 1; }
+.flag-card { width: 24px; height: 16px; border-radius: 2px; box-shadow: 0 0 0 1px var(--line); object-fit: cover; vertical-align: -2px; margin-right: 4px; }
+.cis-flag .flag-card { width: 20px; height: 14px; }
+.ab-flag { display: inline-block; width: 20px; height: 14px; border-radius: 2px; box-shadow: 0 0 0 1px var(--line); background: linear-gradient(180deg, #48a642 0%, #48a642 28%, #fff 28%, #fff 42%, #48a642 42%, #48a642 57%, #fff 57%, #fff 71%, #48a642 71%, #48a642 85%, #fff 85%, #fff 100%); position: relative; vertical-align: -2px; margin-right: 4px; }
+.ab-flag::before { content: ""; position: absolute; left: 0; top: 0; width: 8px; height: 8px; background: #d22; }
 .tab-btn:hover { color: var(--ink-soft); }
 .tab-btn.active {
   color: var(--ink);
   border-bottom: 3px solid var(--accent);
-  background: var(--accent-soft);
   border-radius: 8px 8px 0 0;
 }
+[data-country="th"].tab-btn.active { background: var(--accent-soft); border-bottom-color: var(--accent); }
+[data-country="vn"].tab-btn.active { background: var(--teal-soft); border-bottom-color: var(--teal); }
+[data-country="ge"].tab-btn.active { background: var(--blue-soft); border-bottom-color: var(--blue); }
+[data-country="am"].tab-btn.active { background: var(--rose-soft); border-bottom-color: var(--rose); }
+[data-country="ph"].tab-btn.active { background: #DCE8F5; border-bottom-color: var(--blue); }
+[data-country="py"].tab-btn.active { background: #F6E7D3; border-bottom-color: var(--accent); }
+[data-country="br"].tab-btn.active { background: #DFEDE9; border-bottom-color: var(--teal); }
+[data-country="ar"].tab-btn.active { background: #F8DEE3; border-bottom-color: var(--rose); }
+[data-country="cis"].tab-btn.active { background: var(--line-soft); border-bottom-color: var(--ink-soft); }
 .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
 /* ---------- Country modules ---------- */
-.country { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow); margin-top: 0; }
+.country { background: var(--surface); border: none; border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow); margin-top: 0; }
 .country-top { padding: 18px 22px; }
 .country.th .country-top { background: linear-gradient(180deg, var(--accent-soft), transparent); }
 .country.vn .country-top { background: linear-gradient(180deg, var(--teal-soft), transparent); }

@@ -10,7 +10,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#F7F9F7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14262B" media="(prefers-color-scheme: dark)">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20260711">
 </head>
 <body>
 <div class="wrap">
@@ -166,22 +166,22 @@
 
     <div class="tabs" id="country-tabs">
       <nav class="tab-nav" role="tablist">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="phuket">🇹🇭 Пхукет</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="danang">🇻🇳 Дананг</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="philippines">🇵🇭 Филиппины</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="georgia">🇬🇪 Грузия</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="armenia">🇦🇲 Армения</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="cis">🚗 СНГ</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="paraguay">🇵🇾 Парагвай</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="brazil">🇧🇷 Бразилия</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="argentina">🇦🇷 Аргентина</button>
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="phuket" data-country="th"><img src="https://flagcdn.com/w40/th.png" alt="" class="flag-img" width="20" height="14"> Пхукет</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="danang" data-country="vn"><img src="https://flagcdn.com/w40/vn.png" alt="" class="flag-img" width="20" height="14"> Дананг</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="philippines" data-country="ph"><img src="https://flagcdn.com/w40/ph.png" alt="" class="flag-img" width="20" height="14"> Филиппины</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="georgia" data-country="ge"><img src="https://flagcdn.com/w40/ge.png" alt="" class="flag-img" width="20" height="14"> Грузия</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="armenia" data-country="am"><img src="https://flagcdn.com/w40/am.png" alt="" class="flag-img" width="20" height="14"> Армения</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="cis" data-country="cis"><span class="cis-icon">⚬</span> СНГ</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="paraguay" data-country="py"><img src="https://flagcdn.com/w40/py.png" alt="" class="flag-img" width="20" height="14"> Парагвай</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="brazil" data-country="br"><img src="https://flagcdn.com/w40/br.png" alt="" class="flag-img" width="20" height="14"> Бразилия</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="argentina" data-country="ar"><img src="https://flagcdn.com/w40/ar.png" alt="" class="flag-img" width="20" height="14"> Аргентина</button>
       </nav>
 
       <!-- ====== ПХУКЕТ ====== -->
       <div class="tab-panel active" id="tab-phuket" role="tabpanel">
         <div class="country th">
           <div class="country-top">
-            <div class="flag">🇹🇭 Таиланд</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/th.png" alt="" class="flag-card" width="24" height="16"> Таиланд</div>
             <h3>Пхукет</h3>
             <div class="price">$1 300–1 800 / мес <span class="price-rub" data-usd="1300" data-usd-max="1800"></span></div>
           </div>
@@ -208,7 +208,7 @@
       <div class="tab-panel" id="tab-danang" role="tabpanel">
         <div class="country vn">
           <div class="country-top">
-            <div class="flag">🇻🇳 Вьетнам</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/vn.png" alt="" class="flag-card" width="24" height="16"> Вьетнам</div>
             <h3>Дананг</h3>
             <div class="price">$800–1 100 / мес <span class="price-rub" data-usd="800" data-usd-max="1100"></span></div>
           </div>
@@ -234,7 +234,7 @@
       <div class="tab-panel" id="tab-georgia" role="tabpanel">
         <div class="country ge">
           <div class="country-top">
-            <div class="flag">🇬🇪 Грузия</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/ge.png" alt="" class="flag-card" width="24" height="16"> Грузия</div>
             <h3>Тбилиси</h3>
             <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
           </div>
@@ -263,7 +263,7 @@
       <div class="tab-panel" id="tab-armenia" role="tabpanel">
         <div class="country am">
           <div class="country-top">
-            <div class="flag">🇦🇲 Армения</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/am.png" alt="" class="flag-card" width="24" height="16"> Армения</div>
             <h3>Ереван</h3>
             <div class="price">$500–850 / мес <span class="price-rub" data-usd="500" data-usd-max="850"></span></div>
           </div>
@@ -295,7 +295,7 @@
           <!-- Абхазия -->
           <div class="cis-card">
             <div class="cis-head">
-              <span class="cis-flag">🇦🇧</span>
+              <span class="cis-flag"><span class="ab-flag"></span></span>
               <div>
                 <div class="cis-name">Абхазия</div>
                 <div class="cis-price">~$200–450 / мес <span class="price-rub" data-usd="200" data-usd-max="450"></span></div>
@@ -319,7 +319,7 @@
           <!-- Беларусь -->
           <div class="cis-card">
             <div class="cis-head">
-              <span class="cis-flag">🇧🇾</span>
+              <span class="cis-flag"><img src="https://flagcdn.com/w40/by.png" alt="" class="flag-card" width="20" height="14"></span>
               <div>
                 <div class="cis-name">Беларусь</div>
                 <div class="cis-price">~$450–750 / мес <span class="price-rub" data-usd="450" data-usd-max="750"></span></div>
@@ -343,7 +343,7 @@
           <!-- Казахстан -->
           <div class="cis-card">
             <div class="cis-head">
-              <span class="cis-flag">🇰🇿</span>
+              <span class="cis-flag"><img src="https://flagcdn.com/w40/kz.png" alt="" class="flag-card" width="20" height="14"></span>
               <div>
                 <div class="cis-name">Казахстан</div>
                 <div class="cis-price">~$400–700 / мес <span class="price-rub" data-usd="400" data-usd-max="700"></span></div>
@@ -367,7 +367,7 @@
           <!-- Кыргызстан -->
           <div class="cis-card">
             <div class="cis-head">
-              <span class="cis-flag">🇰🇬</span>
+              <span class="cis-flag"><img src="https://flagcdn.com/w40/kg.png" alt="" class="flag-card" width="20" height="14"></span>
               <div>
                 <div class="cis-name">Кыргызстан</div>
                 <div class="cis-price">~$200–500 / мес <span class="price-rub" data-usd="200" data-usd-max="500"></span></div>
@@ -395,7 +395,7 @@
       <div class="tab-panel" id="tab-philippines" role="tabpanel">
         <div class="country ph">
           <div class="country-top">
-            <div class="flag">🇵🇭 Филиппины</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/ph.png" alt="" class="flag-card" width="24" height="16"> Филиппины</div>
             <h3>Себу</h3>
             <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
           </div>
@@ -423,7 +423,7 @@
       <div class="tab-panel" id="tab-paraguay" role="tabpanel">
         <div class="country py">
           <div class="country-top">
-            <div class="flag">🇵🇾 Парагвай</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/py.png" alt="" class="flag-card" width="24" height="16"> Парагвай</div>
             <h3>Асунсьон</h3>
             <div class="price">$400–700 / мес <span class="price-rub" data-usd="400" data-usd-max="700"></span></div>
           </div>
@@ -451,7 +451,7 @@
       <div class="tab-panel" id="tab-brazil" role="tabpanel">
         <div class="country br">
           <div class="country-top">
-            <div class="flag">🇧🇷 Бразилия</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/br.png" alt="" class="flag-card" width="24" height="16"> Бразилия</div>
             <h3>Рио / Сан-Паулу</h3>
             <div class="price">$600–1 000 / мес <span class="price-rub" data-usd="600" data-usd-max="1000"></span></div>
           </div>
@@ -479,7 +479,7 @@
       <div class="tab-panel" id="tab-argentina" role="tabpanel">
         <div class="country ar">
           <div class="country-top">
-            <div class="flag">🇦🇷 Аргентина</div>
+            <div class="flag"><img src="https://flagcdn.com/w40/ar.png" alt="" class="flag-card" width="24" height="16"> Аргентина</div>
             <h3>Буэнос-Айрес</h3>
             <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
           </div>
@@ -566,6 +566,6 @@
   </footer>
 </div>
 
-<script src="./app.js" defer></script>
+<script src="./app.js?v=20260711" defer></script>
 </body>
 </html>
