@@ -2,7 +2,7 @@
   "use strict";
 
   // ---- Theme toggle ----
-  var THEME_KEY = "reloc-theme-v2";
+  var THEME_KEY = "reloc-theme-v3";
   var root = document.documentElement;
   var toggle = document.getElementById("theme-toggle");
 
@@ -22,7 +22,7 @@
 
   var savedTheme = null;
   try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
-  applyTheme(savedTheme);
+  applyTheme(savedTheme || "light");
 
   if (toggle) {
     toggle.addEventListener("click", function () {
@@ -138,14 +138,19 @@
   updatePhaseDone();
 
   // ---- Collapsible timeline phases ----
-  var PHASE_KEY = "reloc-collapsed-v1";
+  var PHASE_KEY = "reloc-collapsed-v2";
   var collapsed = {};
-  try { collapsed = JSON.parse(localStorage.getItem(PHASE_KEY) || "{}"); } catch (e) { collapsed = {}; }
+  var hasSaved = false;
+  try {
+    var raw = localStorage.getItem(PHASE_KEY);
+    if (raw) { collapsed = JSON.parse(raw); hasSaved = true; }
+  } catch (e) { collapsed = {}; }
 
   phases.forEach(function (phase, i) {
     var head = phase.querySelector(".phase-head");
     if (!head) return;
-    if (collapsed["p" + i]) phase.classList.add("collapsed");
+    var shouldCollapse = hasSaved ? !!collapsed["p" + i] : i > 0;
+    if (shouldCollapse) phase.classList.add("collapsed");
     head.addEventListener("click", function () {
       phase.classList.toggle("collapsed");
       collapsed["p" + i] = phase.classList.contains("collapsed") ? 1 : 0;
@@ -262,6 +267,23 @@
         });
       })(btns[t]);
     }
+  }
+
+  // ---- Collapsible tips items ----
+  var TIPS_KEY = "reloc-tips-v1";
+  var tipsSaved = {};
+  try { tipsSaved = JSON.parse(localStorage.getItem(TIPS_KEY) || "{}"); } catch (e) { tipsSaved = {}; }
+  var tipsItems = document.querySelectorAll(".tips-item");
+  for (var ti = 0; ti < tipsItems.length; ti++) {
+    (function (item, idx) {
+      var tid = "t" + idx;
+      if (tipsSaved[tid] === 1) item.classList.add("collapsed");
+      item.querySelector(".tips-title").addEventListener("click", function () {
+        item.classList.toggle("collapsed");
+        tipsSaved[tid] = item.classList.contains("collapsed") ? 1 : 0;
+        try { localStorage.setItem(TIPS_KEY, JSON.stringify(tipsSaved)); } catch (e) {}
+      });
+    })(tipsItems[ti], ti);
   }
 
   // ---- Service worker ----
