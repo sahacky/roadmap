@@ -1,11 +1,18 @@
 (function () {
   "use strict";
 
-  // ---- Theme toggle ----
+  // ---- Constants ----
+  var COUNTRY_KEY = "reloc-country";
+  var CHECK_KEY = "reloc-checks-v3";
+  var DEPARTURE_KEY = "reloc-departure-date";
   var THEME_KEY = "reloc-theme-v3";
+  var PHASE_KEY = "reloc-collapsed-v3";
+  var MONTHS_RU = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+
   var root = document.documentElement;
   var toggle = document.getElementById("theme-toggle");
 
+  // ---- Theme toggle ----
   function applyTheme(t) {
     if (t === "light" || t === "dark") {
       root.setAttribute("data-theme", t);
@@ -15,8 +22,8 @@
     if (toggle) {
       var isDark = t === "dark" ||
         (!t && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
-      toggle.querySelector(".lbl").textContent = isDark ? "\u0421\u0432\u0435\u0442\u043b\u0430\u044f" : "\u0422\u0451\u043c\u043d\u0430\u044f";
-      toggle.querySelector(".ic").textContent = isDark ? "\u2600" : "\u263E";
+      toggle.querySelector(".lbl").textContent = isDark ? "Светлая" : "Тёмная";
+      toggle.querySelector(".ic").textContent = isDark ? "☀" : "☾";
     }
   }
 
@@ -35,137 +42,7 @@
     });
   }
 
-  // ---- Checkboxes: state + progress ----
-  var CHECK_KEY = "reloc-checks-v2";
-  var allBoxes = [];
-  var timelineSection = document.getElementById("timeline-section");
-  var timelineBoxes = [];
-  var tabBoxes = {};
-
-  // Collect all checkboxes
-  var list = document.querySelectorAll("ul.checks input[type=checkbox]");
-  for (var i = 0; i < list.length; i++) {
-    allBoxes.push(list[i]);
-    list[i].dataset.id = "c" + i;
-    if (timelineSection && timelineSection.contains(list[i])) {
-      timelineBoxes.push(list[i]);
-    }
-  }
-
-  var saved = {};
-  try { saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}"); } catch (e) { saved = {}; }
-
-  allBoxes.forEach(function (b, i) {
-    if (saved["c" + i]) b.checked = true;
-    b.addEventListener("change", function () { persist(); updateProgress(); updatePhaseDone(); });
-  });
-
-  function persist() {
-    var out = {};
-    allBoxes.forEach(function (b) { if (b.checked) out[b.dataset.id] = 1; });
-    try { localStorage.setItem(CHECK_KEY, JSON.stringify(out)); } catch (e) {}
-  }
-
-  // Collect checkboxes per tab panel
-  function collectTabBoxes() {
-    var panels = document.querySelectorAll(".tab-panel");
-    for (var i = 0; i < panels.length; i++) {
-      var id = panels[i].id.replace("tab-", "");
-      var boxes = [];
-      var inputs = panels[i].querySelectorAll("ul.checks input[type=checkbox]");
-      for (var j = 0; j < inputs.length; j++) { boxes.push(inputs[j]); }
-      tabBoxes[id] = boxes;
-    }
-  }
-  collectTabBoxes();
-
-  function getActiveTabId() {
-    var active = document.querySelector(".tab-btn.active");
-    return active ? active.dataset.tab : null;
-  }
-
-  function updateProgress() {
-    var done = 0, total = 0;
-    // Always count timeline
-    for (var i = 0; i < timelineBoxes.length; i++) {
-      total++;
-      if (timelineBoxes[i].checked) done++;
-    }
-    // Count only active tab
-    var activeId = getActiveTabId();
-    if (activeId && tabBoxes[activeId]) {
-      var ab = tabBoxes[activeId];
-      for (var j = 0; j < ab.length; j++) {
-        total++;
-        if (ab[j].checked) done++;
-      }
-    }
-    var pgDone = document.getElementById("pg-done");
-    var pgTotal = document.getElementById("pg-total");
-    var pgBar = document.getElementById("pg-bar");
-    if (pgDone) pgDone.textContent = done;
-    if (pgTotal) pgTotal.textContent = total;
-    if (pgBar) pgBar.style.width = (total ? (done / total * 100) : 0) + "%";
-  }
-
-  // ---- Phase done: green when all checkboxes in a phase are checked ----
-  function updatePhaseDone() {
-    phases.forEach(function (phase) {
-      var inputs = phase.querySelectorAll("ul.checks input[type=checkbox]");
-      if (inputs.length === 0) return;
-      var allChecked = true;
-      for (var i = 0; i < inputs.length; i++) {
-        if (!inputs[i].checked) { allChecked = false; break; }
-      }
-      phase.classList.toggle("done", allChecked);
-    });
-  }
-
-  var resetBtn = document.getElementById("reset");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", function () {
-      if (!confirm("\u0421\u043d\u044f\u0442\u044c \u0432\u0441\u0435 \u0433\u0430\u043b\u043e\u0447\u043a\u0438?")) return;
-      allBoxes.forEach(function (b) { b.checked = false; });
-      try { localStorage.removeItem(CHECK_KEY); } catch (e) {}
-      updateProgress();
-      updatePhaseDone();
-    });
-  }
-
-  var phases = document.querySelectorAll(".timeline .phase");
-
-  updateProgress();
-  updatePhaseDone();
-
-  // ---- Collapsible timeline phases ----
-  var PHASE_KEY = "reloc-collapsed-v2";
-  var collapsed = {};
-  var hasSaved = false;
-  try {
-    var raw = localStorage.getItem(PHASE_KEY);
-    if (raw) { collapsed = JSON.parse(raw); hasSaved = true; }
-  } catch (e) { collapsed = {}; }
-
-  phases.forEach(function (phase, i) {
-    var head = phase.querySelector(".phase-head");
-    if (!head) return;
-    var shouldCollapse = hasSaved ? !!collapsed["p" + i] : i > 0;
-    if (shouldCollapse) phase.classList.add("collapsed");
-    head.addEventListener("click", function () {
-      phase.classList.toggle("collapsed");
-      collapsed["p" + i] = phase.classList.contains("collapsed") ? 1 : 0;
-      try { localStorage.setItem(PHASE_KEY, JSON.stringify(collapsed)); } catch (e) {}
-    });
-  });
-
-  // ---- Countdown ----
-  var DEPARTURE_KEY = "reloc-departure-date";
-  var departureInput = document.getElementById("departure-date");
-  var departureDisplay = document.getElementById("departure-display");
-  var departureDays = document.getElementById("departure-days");
-
-  var MONTHS_RU = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
-
+  // ---- Departure date ----
   function getDepartureDate() {
     var saved = null;
     try { saved = localStorage.getItem(DEPARTURE_KEY); } catch (e) {}
@@ -173,7 +50,12 @@
       var d = new Date(saved + "T00:00:00");
       if (!isNaN(d.getTime())) return d;
     }
+    // Default: Aug 10, 2026
     return new Date(2026, 7, 10, 0, 0, 0);
+  }
+
+  function formatDate(d) {
+    return d.getDate() + " " + MONTHS_RU[d.getMonth()] + " " + d.getFullYear();
   }
 
   function countdown() {
@@ -183,9 +65,9 @@
     var el = document.getElementById("cd-num");
     if (el) el.textContent = diff > 0 ? String(diff) : (diff === 0 ? "0" : "—");
 
-    if (departureDisplay) {
-      departureDisplay.textContent = target.getDate() + " " + MONTHS_RU[target.getMonth()] + " " + target.getFullYear();
-    }
+    var departureDisplay = document.getElementById("departure-display");
+    var departureDays = document.getElementById("departure-days");
+    if (departureDisplay) departureDisplay.textContent = formatDate(target);
     if (departureDays) {
       if (diff > 0) departureDays.textContent = "через " + diff + " дн.";
       else if (diff === 0) departureDays.textContent = "сегодня!";
@@ -198,14 +80,19 @@
     var y = d.getFullYear();
     var m = String(d.getMonth() + 1).padStart(2, "0");
     var day = String(d.getDate()).padStart(2, "0");
+    var departureInput = document.getElementById("departure-date");
     if (departureInput) departureInput.value = y + "-" + m + "-" + day;
   }
 
+  var departureInput = document.getElementById("departure-date");
   if (departureInput) {
     departureInput.addEventListener("change", function () {
       if (departureInput.value) {
         try { localStorage.setItem(DEPARTURE_KEY, departureInput.value); } catch (e) {}
         countdown();
+        // Re-render timeline with new dates if a country is selected
+        var country = getSelectedCountry();
+        if (country) renderTimeline(country);
       }
     });
   }
@@ -219,23 +106,7 @@
   var rateDateEl = document.getElementById("rate-date");
 
   function fmtRate(r) {
-    return r.toFixed(2).replace(".", ",") + " \u20bd";
-  }
-
-  function convertPrices(rate) {
-    var spans = document.querySelectorAll(".price-rub");
-    for (var i = 0; i < spans.length; i++) {
-      var el = spans[i];
-      var lo = parseFloat(el.dataset.usd);
-      var hi = parseFloat(el.dataset.usdMax);
-      if (isNaN(lo) || isNaN(hi)) continue;
-      var rubLo = Math.round(lo * rate);
-      var rubHi = Math.round(hi * rate);
-      var sLo = rubLo >= 1000 ? Math.round(rubLo / 1000) + "k" : String(rubLo);
-      var sHi = rubHi >= 1000 ? Math.round(rubHi / 1000) + "k" : String(rubHi);
-      var rs = rate.toFixed(1).replace(".", ",");
-      el.textContent = "\u00b7 " + sLo + "\u2013" + sHi + " \u20bd (\u043a\u0443\u0440\u0441 " + rs + " \u20bd/$)";
-    }
+    return r.toFixed(2).replace(".", ",") + " ₽";
   }
 
   function fetchRate() {
@@ -247,7 +118,7 @@
         if (p && p.rate && p.ts && (Date.now() - p.ts < 3600000)) {
           USD_RATE = p.rate;
           if (rateEl) rateEl.textContent = fmtRate(USD_RATE);
-          convertPrices(USD_RATE);
+          updateBudgetDisplay();
           return;
         }
       } catch (e) {}
@@ -263,9 +134,9 @@
           if (data && data.rates && data.rates.RUB) {
             USD_RATE = data.rates.RUB;
             if (rateEl) rateEl.textContent = fmtRate(USD_RATE);
-            if (rateDateEl) rateDateEl.textContent = "\u043a\u0443\u0440\u0441 open.er-api.com \u00b7 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0440\u0430\u0437 \u0432 \u0447\u0430\u0441";
+            if (rateDateEl) rateDateEl.textContent = "курс open.er-api.com · обновление раз в час";
             try { localStorage.setItem("reloc-usd-rate-v2", JSON.stringify({ rate: USD_RATE, ts: Date.now() })); } catch (e) {}
-            convertPrices(USD_RATE);
+            updateBudgetDisplay();
             return;
           }
         } catch (e) {}
@@ -280,54 +151,356 @@
   function useFallback() {
     USD_RATE = 76.40;
     if (rateEl) rateEl.textContent = fmtRate(USD_RATE);
-    if (rateDateEl) rateDateEl.textContent = "\u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e";
-    convertPrices(USD_RATE);
+    if (rateDateEl) rateDateEl.textContent = "по умолчанию";
+    updateBudgetDisplay();
+  }
+
+  function updateBudgetDisplay() {
+    var country = getSelectedCountry();
+    if (!country || !COUNTRIES[country]) return;
+    var c = COUNTRIES[country];
+    var budgetEl = document.getElementById("budget-display");
+    var budgetRub = document.getElementById("budget-rub");
+    if (budgetEl) budgetEl.textContent = "~$" + c.priceLo + "–" + c.priceHi + " / мес";
+    if (budgetRub) {
+      var rubLo = Math.round(c.priceLo * USD_RATE);
+      var rubHi = Math.round(c.priceHi * USD_RATE);
+      var sLo = rubLo >= 1000 ? Math.round(rubLo / 1000) + "k" : String(rubLo);
+      var sHi = rubHi >= 1000 ? Math.round(rubHi / 1000) + "k" : String(rubHi);
+      budgetRub.textContent = "≈" + sLo + "–" + sHi + " ₽ (курс " + USD_RATE.toFixed(1).replace(".", ",") + " ₽/$)";
+    }
   }
 
   fetchRate();
 
-  // ---- Tabs ----
-  var tabContainer = document.getElementById("country-tabs");
-  if (tabContainer) {
-    var btns = tabContainer.querySelectorAll(".tab-btn");
-    var panels = tabContainer.querySelectorAll(".tab-panel");
+  // ---- Country selection ----
+  function getSelectedCountry() {
+    try { return localStorage.getItem(COUNTRY_KEY); } catch (e) { return null; }
+  }
 
-    for (var t = 0; t < btns.length; t++) {
-      (function (btn) {
-        btn.addEventListener("click", function () {
-          var tab = btn.dataset.tab;
-          for (var j = 0; j < btns.length; j++) {
-            btns[j].classList.remove("active");
-            btns[j].setAttribute("aria-selected", "false");
-          }
-          for (var k = 0; k < panels.length; k++) {
-            panels[k].classList.remove("active");
-          }
-          btn.classList.add("active");
-          btn.setAttribute("aria-selected", "true");
-          var panel = document.getElementById("tab-" + tab);
-          if (panel) panel.classList.add("active");
-          updateProgress();
+  function setSelectedCountry(key) {
+    try { localStorage.setItem(COUNTRY_KEY, key); } catch (e) {}
+  }
+
+  function clearSelectedCountry() {
+    try { localStorage.removeItem(COUNTRY_KEY); } catch (e) {}
+  }
+
+  var selectSection = document.getElementById("country-select-section");
+  var roadmapSection = document.getElementById("roadmap-section");
+  var deepSection = document.getElementById("deep-section");
+  var roadmapCountryName = document.getElementById("roadmap-country-name");
+  var changeCountryBtn = document.getElementById("change-country-btn");
+  var budgetDisplay = document.getElementById("budget-display");
+  var budgetRub = document.getElementById("budget-rub");
+  var countryDisplay = document.getElementById("country-display");
+  var countryVisa = document.getElementById("country-visa");
+  var criticalText = document.getElementById("critical-text");
+
+  // Build country selection grid
+  function buildCountryGrid() {
+    var grid = document.getElementById("country-select-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    var keys = Object.keys(COUNTRIES);
+    for (var i = 0; i < keys.length; i++) {
+      (function (key) {
+        var c = COUNTRIES[key];
+        var card = document.createElement("button");
+        card.type = "button";
+        card.className = "country-select-card " + (c.priceClass || "");
+        card.dataset.country = key;
+
+        var flagHtml = "";
+        if (c.flagCustom === "ab") {
+          flagHtml = '<span class="ab-flag"></span>';
+        } else if (c.flagUrl) {
+          flagHtml = '<img src="' + c.flagUrl + '" alt="" class="flag-img" width="28" height="20">';
+        }
+
+        card.innerHTML =
+          '<div class="csc-flag">' + flagHtml + '</div>' +
+          '<div class="csc-name">' + c.name + '</div>' +
+          '<div class="csc-city">' + c.city + '</div>' +
+          '<div class="csc-price">' + c.price + '</div>' +
+          '<div class="csc-visa">' + c.visa + '</div>';
+
+        card.addEventListener("click", function () {
+          selectCountry(key);
         });
-      })(btns[t]);
+
+        grid.appendChild(card);
+      })(keys[i]);
     }
   }
 
-  // ---- Collapsible tips items ----
-  var TIPS_KEY = "reloc-tips-v1";
-  var tipsSaved = {};
-  try { tipsSaved = JSON.parse(localStorage.getItem(TIPS_KEY) || "{}"); } catch (e) { tipsSaved = {}; }
-  var tipsItems = document.querySelectorAll(".tips-item");
-  for (var ti = 0; ti < tipsItems.length; ti++) {
-    (function (item, idx) {
-      var tid = "t" + idx;
-      if (tipsSaved[tid] === 1) item.classList.add("collapsed");
-      item.querySelector(".tips-title").addEventListener("click", function () {
-        item.classList.toggle("collapsed");
-        tipsSaved[tid] = item.classList.contains("collapsed") ? 1 : 0;
-        try { localStorage.setItem(TIPS_KEY, JSON.stringify(tipsSaved)); } catch (e) {}
+  function selectCountry(key) {
+    if (!COUNTRIES[key]) return;
+    setSelectedCountry(key);
+    showRoadmap(key);
+  }
+
+  function showRoadmap(key) {
+    var c = COUNTRIES[key];
+    if (!c) return;
+
+    // Hide select, show roadmap
+    selectSection.style.display = "none";
+    roadmapSection.style.display = "";
+    deepSection.style.display = "";
+
+    // Update header stats
+    if (roadmapCountryName) roadmapCountryName.textContent = c.name;
+    if (countryDisplay) countryDisplay.textContent = c.name;
+    if (countryVisa) countryVisa.textContent = c.visa + " · " + c.timezone;
+    if (criticalText) {
+      criticalText.innerHTML = "<b>" + c.critical + "</b>";
+    }
+    updateBudgetDisplay();
+
+    // Render timeline
+    renderTimeline(key);
+
+    // Render deep block
+    renderDeepBlock(key);
+  }
+
+  function showCountrySelect() {
+    selectSection.style.display = "";
+    roadmapSection.style.display = "none";
+    deepSection.style.display = "none";
+  }
+
+  if (changeCountryBtn) {
+    changeCountryBtn.addEventListener("click", function () {
+      clearSelectedCountry();
+      showCountrySelect();
+    });
+  }
+
+  // ---- Timeline rendering ----
+  function getWeekDates(weekNum) {
+    var dep = getDepartureDate();
+    // Week 0 starts 28 days before departure
+    var weekStart = new Date(dep);
+    weekStart.setDate(weekStart.getDate() - 28 + weekNum * 7);
+    var weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    // Special cases
+    if (weekNum === "arrive") {
+      return "На месте · первая неделя";
+    }
+    if (weekNum === 3) {
+      // Last week before departure
+      var finalStart = new Date(dep);
+      finalStart.setDate(finalStart.getDate() - 7);
+      return formatDateShort(finalStart) + "–" + formatDateShort(dep) + " · Неделя " + weekNum;
+    }
+
+    return formatDateShort(weekStart) + "–" + formatDateShort(weekEnd) + " · Неделя " + weekNum;
+  }
+
+  function formatDateShort(d) {
+    return d.getDate() + " " + MONTHS_RU[d.getMonth()];
+  }
+
+  function renderTimeline(countryKey) {
+    var c = COUNTRIES[countryKey];
+    if (!c) return;
+
+    var timeline = document.getElementById("timeline");
+    if (!timeline) return;
+    timeline.innerHTML = "";
+
+    var weekKeys = ["0", "1", "2", "3", "arrive"];
+
+    for (var w = 0; w < weekKeys.length; w++) {
+      var wk = weekKeys[w];
+      var week = c.weeks[wk];
+      if (!week) continue;
+
+      var phase = document.createElement("div");
+      phase.className = "phase";
+      if (wk === "arrive") phase.className += " arrive";
+
+      var dateLabel = getWeekDates(wk);
+      // For week 3 (finał), override title format
+      if (wk === 3) {
+        var dep = getDepartureDate();
+        var finStart = new Date(dep);
+        finStart.setDate(finStart.getDate() - 7);
+        dateLabel = formatDateShort(finStart) + "–" + formatDateShort(dep) + " · Неделя 3";
+      }
+
+      var cardHtml =
+        '<div class="card">' +
+        '<div class="phase-head">' +
+        '<span class="phase-date">' + dateLabel + '</span>' +
+        '<span class="phase-title">' + week.title + '</span>' +
+        '</div>' +
+        '<ul class="checks">';
+
+      for (var t = 0; t < week.tasks.length; t++) {
+        var task = week.tasks[t];
+        var tagHtml = "";
+        if (task.tag === "crit" && task.tagText) {
+          tagHtml = '<span class="tag crit">' + task.tagText + '</span>';
+        } else if (task.tag === "both" && task.tagText) {
+          tagHtml = '<span class="tag both">' + task.tagText + '</span>';
+        }
+
+        var smallHtml = task.small ? "<small>" + task.small + "</small>" : "";
+
+        cardHtml +=
+          '<li><label class="chk"><input type="checkbox">' +
+          '<span class="box"></span>' +
+          '<span class="chk-txt">' + tagHtml + task.text + smallHtml + '</span>' +
+          '</label></li>';
+      }
+
+      cardHtml += '</ul></div>';
+      phase.innerHTML = cardHtml;
+      timeline.appendChild(phase);
+    }
+
+    // Re-bind checkboxes
+    bindCheckboxes();
+    updateProgress();
+    updatePhaseDone();
+    collapsePhases();
+  }
+
+  // ---- Deep block rendering ----
+  function renderDeepBlock(countryKey) {
+    var c = COUNTRIES[countryKey];
+    if (!c || !c.deep) return;
+
+    var body = document.getElementById("deep-body");
+    if (!body) return;
+    body.innerHTML = "";
+
+    var deep = c.deep;
+
+    // Tiles
+    var tilesHtml = '<div class="deep-tiles">';
+    for (var i = 0; i < deep.tiles.length; i++) {
+      var tile = deep.tiles[i];
+      tilesHtml += '<div class="tile"><div class="k">' + tile.k + '</div><div class="v">' + tile.v + '</div><div class="d">' + tile.d + '</div></div>';
+    }
+    tilesHtml += '</div>';
+
+    // Grid
+    var gridHtml = '<div class="deep-grid">';
+    for (var j = 0; j < deep.grid.length; j++) {
+      var g = deep.grid[j];
+      gridHtml += '<div class="info"><div class="ik">' + g.ik + '</div><div class="iv">' + g.iv + '</div></div>';
+    }
+    gridHtml += '</div>';
+
+    // Risk
+    var riskHtml = '<div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">' + deep.risk + '</span></div>';
+
+    // Source
+    var srcHtml = '<div class="deep-src">' + deep.src + '</div>';
+
+    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml;
+  }
+
+  // ---- Checkboxes ----
+  var allBoxes = [];
+
+  function bindCheckboxes() {
+    allBoxes = [];
+    var list = document.querySelectorAll("#timeline ul.checks input[type=checkbox]");
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(CHECK_KEY) || "{}"); } catch (e) { saved = {}; }
+
+    for (var i = 0; i < list.length; i++) {
+      allBoxes.push(list[i]);
+      list[i].dataset.id = "c" + i;
+      if (saved["c" + i]) list[i].checked = true;
+      list[i].addEventListener("change", function () { persist(); updateProgress(); updatePhaseDone(); });
+    }
+  }
+
+  function persist() {
+    var out = {};
+    allBoxes.forEach(function (b) { if (b.checked) out[b.dataset.id] = 1; });
+    try { localStorage.setItem(CHECK_KEY, JSON.stringify(out)); } catch (e) {}
+  }
+
+  function updateProgress() {
+    var done = 0, total = 0;
+    for (var i = 0; i < allBoxes.length; i++) {
+      total++;
+      if (allBoxes[i].checked) done++;
+    }
+    var pgDone = document.getElementById("pg-done");
+    var pgTotal = document.getElementById("pg-total");
+    var pgBar = document.getElementById("pg-bar");
+    if (pgDone) pgDone.textContent = done;
+    if (pgTotal) pgTotal.textContent = total;
+    if (pgBar) pgBar.style.width = (total ? (done / total * 100) : 0) + "%";
+  }
+
+  function updatePhaseDone() {
+    var phases = document.querySelectorAll(".timeline .phase");
+    phases.forEach(function (phase) {
+      var inputs = phase.querySelectorAll("ul.checks input[type=checkbox]");
+      if (inputs.length === 0) return;
+      var allChecked = true;
+      for (var i = 0; i < inputs.length; i++) {
+        if (!inputs[i].checked) { allChecked = false; break; }
+      }
+      phase.classList.toggle("done", allChecked);
+    });
+  }
+
+  // ---- Collapsible phases ----
+  function collapsePhases() {
+    var phases = document.querySelectorAll(".timeline .phase");
+    var collapsed = {};
+    var hasSaved = false;
+    try {
+      var raw = localStorage.getItem(PHASE_KEY);
+      if (raw) { collapsed = JSON.parse(raw); hasSaved = true; }
+    } catch (e) { collapsed = {}; }
+
+    phases.forEach(function (phase, i) {
+      var head = phase.querySelector(".phase-head");
+      if (!head) return;
+      var shouldCollapse = hasSaved ? !!collapsed["p" + i] : i > 0;
+      if (shouldCollapse) phase.classList.add("collapsed");
+      head.addEventListener("click", function () {
+        phase.classList.toggle("collapsed");
+        collapsed["p" + i] = phase.classList.contains("collapsed") ? 1 : 0;
+        try { localStorage.setItem(PHASE_KEY, JSON.stringify(collapsed)); } catch (e) {}
       });
-    })(tipsItems[ti], ti);
+    });
+  }
+
+  // ---- Reset ----
+  var resetBtn = document.getElementById("reset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      if (!confirm("Снять все галочки?")) return;
+      allBoxes.forEach(function (b) { b.checked = false; });
+      try { localStorage.removeItem(CHECK_KEY); } catch (e) {}
+      updateProgress();
+      updatePhaseDone();
+    });
+  }
+
+  // ---- Init ----
+  buildCountryGrid();
+
+  var selected = getSelectedCountry();
+  if (selected && COUNTRIES[selected]) {
+    showRoadmap(selected);
+  } else {
+    showCountrySelect();
   }
 
   // ---- Service worker ----

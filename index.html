@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Роадмап релокации · Россия → ЮВА</title>
-  <meta name="description" content="Пошаговый план выезда из России на 4–6 месяцев: Пхукет и Дананг. Чек-листы, счётчик дней до вылета, сравнение направлений.">
+  <title>Роадмап релокации · Россия → Мир</title>
+  <meta name="description" content="Пошаговый план выезда из России: чек-листы по неделям, сравнение направлений, цены и визы. 12 стран на выбор.">
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="./icon.svg">
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#F7F9F7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14262B" media="(prefers-color-scheme: dark)">
-  <link rel="stylesheet" href="./styles.css?v=20260712">
+  <link rel="stylesheet" href="./styles.css?v=20260719">
 </head>
 <body>
 <div class="wrap">
   <header class="hero">
     <div class="hero-top">
       <div class="hero-left">
-        <div class="eyebrow">План вылета · Россия → Юго-Восточная Азия</div>
+        <div class="eyebrow">План вылета · Россия → Мир</div>
         <h1>Роадмап релокации на&nbsp;4–6&nbsp;месяцев</h1>
-        <p class="hero-sub">Пошаговый план от подготовки до вылета и первой недели на&nbsp;месте. Направления на&nbsp;выбор: Юго-Восточная Азия, Кавказ, СНГ, Латинская Америка. Удалённая работа в&nbsp;IT сохраняется, доход&nbsp;идёт.</p>
+        <p class="hero-sub">Пошаговый план от подготовки до вылета и&nbsp;первой недели на&nbsp;месте. Выбери страну — получи дорожную карту с&nbsp;чек-листами по&nbsp;неделям.</p>
       </div>
       <div class="hero-aside">
         <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему">
@@ -41,13 +41,13 @@
   <div class="stats">
     <div class="tile">
       <div class="k">Окно вылета</div>
-      <div class="v" id="departure-display">10 авг 2026</div>
+      <div class="v" id="departure-display">—</div>
       <div class="d" id="departure-days"></div>
     </div>
     <div class="tile">
       <div class="k">Бюджет на&nbsp;жизнь</div>
-      <div class="v">~$1 750 / мес</div>
-      <div class="d">≈135k ₽</div>
+      <div class="v" id="budget-display">—</div>
+      <div class="d" id="budget-rub"></div>
     </div>
     <div class="tile">
       <div class="k">Курс USD/RUB</div>
@@ -55,688 +55,52 @@
       <div class="d" id="rate-date">данные open.er-api.com · обновление раз в&nbsp;час</div>
     </div>
     <div class="tile">
-      <div class="k">Загранпаспорт</div>
-      <div class="v">10&nbsp;лет ✓</div>
-      <div class="d">биометрический, оформлен свежим</div>
+      <div class="k">Страна</div>
+      <div class="v" id="country-display">Выбери страну</div>
+      <div class="d" id="country-visa"></div>
     </div>
   </div>
 
-  <div class="critical">
+  <div class="critical" id="critical-banner">
     <div class="mk">Критично</div>
-    <p><b>Самый узкий узел — не виза, а деньги.</b> Российские Visa/Mastercard в&nbsp;Азии не&nbsp;работают. Платёжный контур (наличные&nbsp;USD + USDT + карта иностранного банка) надо начать собирать <b>в&nbsp;первые дни</b> — он готовится дольше всего. Билеты и&nbsp;визы проще.</p>
+    <p id="critical-text"><b>Самый узкий узел — не виза, а деньги.</b> Платёжный контур (наличные&nbsp;USD + USDT + карта иностранного банка) надо начать собирать <b>в&nbsp;первые дни</b> — он готовится дольше всего.</p>
   </div>
 
-  <!-- ==================== ТАЙМЛАЙН (общие задачи) ==================== -->
-  <section id="timeline-section">
+  <!-- ==================== ВЫБОР СТРАНЫ ==================== -->
+  <section id="country-select-section">
     <div class="sec-head">
-      <h2>Дорожная карта по&nbsp;неделям</h2>
-      <span class="hint">отмечай галочками — прогресс сохраняется в&nbsp;браузере</span>
+      <h2>Выбери страну</h2>
+      <span class="hint">12 направлений — кликни чтобы увидеть дорожную карту</span>
+    </div>
+    <div class="country-select-grid" id="country-select-grid">
+      <!-- Populated by JS from countries.js -->
+    </div>
+  </section>
+
+  <!-- ==================== ДОРОЖНАЯ КАРТА ==================== -->
+  <section id="roadmap-section" style="display:none;">
+    <div class="sec-head">
+      <h2>Дорожная карта · <span id="roadmap-country-name"></span></h2>
+      <div class="sec-actions">
+        <span class="hint">отмечай галочками — прогресс сохраняется в&nbsp;браузере</span>
+        <button class="change-country-btn" id="change-country-btn" type="button">Сменить страну</button>
+      </div>
     </div>
 
     <div class="timeline" id="timeline">
-
-      <div class="phase">
-        <div class="card">
-          <div class="phase-head">
-            <span class="phase-date">11–13 июля · Неделя 0</span>
-            <span class="phase-title">«Можно ли ехать» + запуск денег</span>
-          </div>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">выезд</span>Проверить долги в&nbsp;ФССП и&nbsp;реестр повесток<small>fssp.gov.ru + Госуслуги. Офицер запаса кат.&nbsp;А, но подтвердить, что ограничения на&nbsp;выезд нет</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить загран: 2+&nbsp;пустые страницы, срок&nbsp;ОК<small>10&nbsp;лет — запаса хватит на&nbsp;всё</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">деньги</span>Решить платёжный контур: наличные&nbsp;USD (до&nbsp;$10k без декларации) + USDT-кошелёк + карта иностранного банка<small>Wise / Bank of Georgia / Ameriabank (Армения) / Halyk (КЗ) — открывают по заграну/внутреннему на&nbsp;месте. Это готовится дольше всего — стартуем сразу</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить первую партию USDT (биржа/P2P) и&nbsp;перевести в&nbsp;свой кошелёк</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Начать подбор медстраховки на&nbsp;6&nbsp;месяцев<small>Cherehapa и&nbsp;аналоги; для Малайзии/ВНЖ страховка обязательна</small></span></label></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="phase">
-        <div class="card">
-          <div class="phase-head">
-            <span class="phase-date">14–20 июля · Неделя 1</span>
-            <span class="phase-title">Логистика · связь · жильё</span>
-          </div>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">логистика</span>Заложить трансфер Ростов→Москва<small>аэропорт Платов закрыт: Сапсан/поезд или вылет через Минводы. +1&nbsp;день</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить eSIM на&nbsp;trip.com заранее (дешевле Airalo) + оплатить VPN<small>trip.com — eSIM от&nbsp;$2–5 за&nbsp;Азию; Airalo — запасной вариант</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Бронь жилья на&nbsp;первые 10–14&nbsp;дней<small><b>Facebook Marketplace</b> — рекомендовано, дешевле всего. Также: Agoda/Booking. Airbnb и&nbsp;«Островок» — дороже</small></span></label></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="phase">
-        <div class="card">
-          <div class="phase-head">
-            <span class="phase-date">21 июля – 3 авг · Недели 2–3</span>
-            <span class="phase-title">Документы · дубли · тыл</span>
-          </div>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Копии всех документов в&nbsp;облако<small>загран, военный билет, права, свидетельства</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Сохранить российский номер (нужен для банков и&nbsp;Госуслуг)<small>роуминг / eSIM / переоформить на&nbsp;родных</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить доступ к&nbsp;росбанкам и&nbsp;Госуслугам через VPN из-за границы</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Настроить автоплатёж по&nbsp;ипотеке<small>45к ₽/мес идут независимо от&nbsp;отъезда</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">работа</span>Согласовать с&nbsp;работодателем работу из-за границы<small>проверить, что созвон 11–17&nbsp;МСК ложится в&nbsp;12:00–18:00 местного</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Международные права (IDP), если планируешь байк/авто<small>в&nbsp;Азии основной транспорт — скутер</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Аптечка + запас личных лекарств + рецепты на&nbsp;латинице</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">важно</span>Оформить генеральную доверенность на&nbsp;родственников<small>на&nbsp;недвижимость, авто, банковские операции — нотариус, делать заранее</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">важно</span>Сделать побольше фото себя и&nbsp;семьи на&nbsp;документы<small>часто срочно нужны для&nbsp;виз, страховок, консульств — качественные, на&nbsp;белом фоне</small></span></label></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="phase depart">
-        <div class="card">
-          <div class="phase-head">
-            <span class="phase-date">4–10 авг · Неделя 4</span>
-            <span class="phase-title">Финал и&nbsp;вылет</span>
-          </div>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Финальная закупка валюты (наличные&nbsp;USD)</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag both">на границе</span>На руках: виза/разрешение, бронь жилья, обратный или onward-билет<small>подтверждение выезда спрашивают на&nbsp;паспортном контроле</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Трансфер Ростов→Москва, вылет</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Вылет 10–15&nbsp;августа</span></label></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="phase arrive">
-        <div class="card">
-          <div class="phase-head">
-            <span class="phase-date">На месте · первая неделя</span>
-            <span class="phase-title">Приземление и&nbsp;обустройство</span>
-          </div>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Локальная симка</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt"><span class="tag crit">деньги</span>Вывод денег: USDT → наличные через локальные обменники/P2P</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Долгосрочное жильё на&nbsp;1–3&nbsp;месяца, заселение</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Вписаться в&nbsp;Telegram-чаты релокантов</span></label></li>
-          </ul>
-        </div>
-      </div>
-
+      <!-- Populated by JS: phases with tasks -->
     </div>
   </section>
 
-  <!-- ==================== НАПРАВЛЕНИЯ (табы) ==================== -->
-  <section>
-    <div class="sec-head">
-      <h2>Направления</h2>
-      <span class="hint">выбери вкладку — цены в&nbsp;долларах</span>
-    </div>
-
-    <div class="tabs" id="country-tabs">
-      <nav class="tab-nav" role="tablist">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="phuket" data-country="th"><img src="https://flagcdn.com/w40/th.png" alt="" class="flag-img" width="20" height="14"> Пхукет</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="danang" data-country="vn"><img src="https://flagcdn.com/w40/vn.png" alt="" class="flag-img" width="20" height="14"> Дананг</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="philippines" data-country="ph"><img src="https://flagcdn.com/w40/ph.png" alt="" class="flag-img" width="20" height="14"> Филиппины</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="georgia" data-country="ge"><img src="https://flagcdn.com/w40/ge.png" alt="" class="flag-img" width="20" height="14"> Грузия</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="armenia" data-country="am"><img src="https://flagcdn.com/w40/am.png" alt="" class="flag-img" width="20" height="14"> Армения</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="cis" data-country="cis"><span class="cis-icon">⚬</span> СНГ</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="paraguay" data-country="py"><img src="https://flagcdn.com/w40/py.png" alt="" class="flag-img" width="20" height="14"> Парагвай</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="brazil" data-country="br"><img src="https://flagcdn.com/w40/br.png" alt="" class="flag-img" width="20" height="14"> Бразилия</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="argentina" data-country="ar"><img src="https://flagcdn.com/w40/ar.png" alt="" class="flag-img" width="20" height="14"> Аргентина</button>
-      </nav>
-
-      <!-- ====== ПХУКЕТ ====== -->
-      <div class="tab-panel active" id="tab-phuket" role="tabpanel">
-        <div class="country th">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/th.png" alt="" class="flag-card" width="24" height="16"> Таиланд</div>
-            <h3>Пхукет</h3>
-            <div class="price">$1 300–1 800 / мес <span class="price-rub" data-usd="1300" data-usd-max="1800"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>60 дн безвиз + 30</b> = 90 дней, далее визаран. DTV (5&nbsp;лет) — цель на&nbsp;потом</dd></div>
-            <div><dt>Пояс</dt><dd>МСК+4 → работа <b>15:00–21:00</b> местного ✓</dd></div>
-            <div><dt>Перелёт</dt><dd><b>Прямой</b> Аэрофлот Москва→Бангкок ~$450–670 + внутренний до&nbsp;HKT</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Максимум инфраструктуры для релокантов, огромное рус.&nbsp;комьюнити, море</dd></div>
-            <div><dt>Слабые</dt><dd>Дороже Вьетнама; без депозита пока только визаран-цикл</dd></div>
-          </dl>
-        </div>
-        <div class="tab-checklist">
-          <h4>Чек-лист · Пхукет</h4>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить прямой Аэрофлот Москва→Бангкок (~$450–670) + внутренний до&nbsp;Пхукета (HKT)<small>~10 ч до BKK, август — минимальные цены</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить <b>TDAC</b> за 72 ч до прилёта<small>онлайн-анкета, продление +30 дней — в иммиграции на месте</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Спланировать продление визы +30 ивизаран после 90 дней<small>ближайший визаран — Малайзия / Камбоджа / Филиппины</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Через 3–4 мес (ремонт закрыт) — копить 500 000 THB (~$15k) на DTV-визу (5 лет)<small>переход с визаран-цикла на долгий статус — вариант 4</small></span></label></li>
-          </ul>
-        </div>
-        <details class="deep">
-          <summary>📊 Детально по стране — проверенные данные</summary>
-          <div class="deep-body">
-            <div class="deep-tiles">
-              <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$455–680</div><div class="d">за&nbsp;месяц, в&nbsp;районе / центр</div></div>
-              <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$280<span>&nbsp;/мес</span></div><div class="d">смешанное питание, местные + кафе</div></div>
-              <div class="tile"><div class="k">Интернет · скорость</div><div class="v">236<span>&nbsp;Мбит/с</span></div><div class="d">средний Upload — быстрый</div></div>
-            </div>
-            <div class="deep-grid">
-              <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Patong</b> — ночная жизнь, кафе, хаб номадов. <b>Kata</b> — пляж, тише, кафе. <b>Cherng Talay / Bang Tao</b> — север, новые кондо, бюджетнее. <b>Rawai / Nai Harn</b> — юг, местный колорит. <b>Phuket Town</b> — старый город, дешёвая еда</div></div>
-              <div class="info"><div class="ik">💳 Банк и карта</div><div class="iv"><b>Bangkok Bank</b>, <b>Kasikorn</b>, <b>SCB</b> — открытие по паспорту + TM30. Многие банки требуют work permit. <b>Wise / Revolut</b> — основной способ получения переводов. ATM-лимит ฿20–30k за раз</div></div>
-              <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Локальная зарплата IT: ฿30–60k ($860–$1700). Удалёнка на зарубежные компании: <b>$2500–6000</b>. Девелоперы на Phuket — редкость, основной хаб — Бангкок</div></div>
-              <div class="info"><div class="ik">🔎 Где искать</div><div class="iv">Жильё: Facebook Marketplace (дешевле всего), Agoda, Booking. Работа: LinkedIn, Upwork, RemoteOK. Номады: NomadList Phuket</div></div>
-              <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>60 дн безвиз + 30</b> продление = 90 дней. Далее визаран. <b>DTV</b> (5 лет): ฿50k, нужен ฿500k на счету + доход €6.1k/мес. Безвиз — без DP</div></div>
-              <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>Налог на иностранный доход — 0%</b> (если не резидент). Резидент (180+ дн) — прогрессивный 0–35%. DTV-виза не даёт резидентства автоматически</div></div>
-            </div>
-            <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Таиланд не под санкциями, но банки ужесточили KYC для россиян. <b>Wise/Revolut</b> — основной канал. Прямые переводы из РФ в thai-банки могут блокироваться. Крипто — серая зона</span></div>
-            <div class="deep-src">Источники: Numbeo (июль 2026) · VisaGuide.World · NomadList. Цены — оценка</div>
-          </div>
-        </details>
+  <!-- ==================== СПРАВОЧНЫЙ БЛОК (deep) ==================== -->
+  <section id="deep-section" style="display:none;">
+    <details class="deep" open>
+      <summary>📊 Детально по стране — проверенные данные</summary>
+      <div class="deep-body" id="deep-body">
+        <!-- Populated by JS from countries.js deep data -->
       </div>
-
-      <!-- ====== ДАНАНГ ====== -->
-      <div class="tab-panel" id="tab-danang" role="tabpanel">
-        <div class="country vn">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/vn.png" alt="" class="flag-card" width="24" height="16"> Вьетнам</div>
-            <h3>Дананг</h3>
-            <div class="price">$800–1 100 / мес <span class="price-rub" data-usd="800" data-usd-max="1100"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>e-visa 90 дн</b> ($25) или безвиз 45 дн <b>без «правила паузы»</b> — можно сразу назад</dd></div>
-            <div><dt>Пояс</dt><dd>МСК+4 → работа <b>15:00–21:00</b> местного ✓</dd></div>
-            <div><dt>Перелёт</dt><dd>С пересадкой (прямых из Москвы нет), ~$400–700</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Заметно дешевле, простой визаран, быстрый интернет, море</dd></div>
-            <div><dt>Слабые</dt><dd>Полноценного ВНЖ нет — только визаран-цикл; медицина слабее</dd></div>
-          </dl>
-        </div>
-        <div class="tab-checklist">
-          <h4>Чек-лист · Дананг</h4>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Дананг с пересадкой (~$400–700)<small>стыковка через Бангкок/Ближний Восток; сравнить с прилётом в Ханой + внутренний</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить <b>e-visa на 90 дней</b> ($25, 3–7 дней)<small>или безвиз 45 дней для короткого пребывания</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Спланировать визаран (без «правила паузы» — можно сразу вернуться)<small>ближайшие: Лаос, Камбоджа</small></span></label></li>
-          </ul>
-        </div>
-        <details class="deep">
-          <summary>📊 Детально по стране — проверенные данные</summary>
-          <div class="deep-body">
-            <div class="deep-tiles">
-              <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$340–540</div><div class="d">за&nbsp;месяц, в&nbsp;районе / центр</div></div>
-              <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$240<span>&nbsp;/мес</span></div><div class="d">местная еда + кафе, bánh mì $0.60–1</div></div>
-              <div class="tile"><div class="k">Интернет · скорость</div><div class="v">150+<span>&nbsp;Мбит/с</span></div><div class="d">opera / Viettel, VPN обязателен</div></div>
-            </div>
-            <div class="deep-grid">
-              <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>An Thuong / My An</b> — хаб номадов, кафе, 5 мин до пляжа. <b>My Khe</b> — пляжный фронт, дороже. <b>Hai Chau</b> — центр, бюджетно. <b>Ngu Hanh Son</b> — тихий, дёшево, 100–250 Мбит/с</div></div>
-              <div class="info"><div class="ik">💳 Банк и карта</div><div class="iv"><b>Vietcombank</b>, <b>Techcombank</b> — нужен work permit / TRC. Турист <b>не может</b> открыть счёт. <b>Wise / Revolut</b> — основной канал. MoMo — для локальных платежей (нужен VN-номер)</div></div>
-              <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Локальный: Senior $1200–1670, CTO $4050. Удалёнка на зарубеж: <b>$3800–7500</b>. Хаб — Хо Ши Minh / Ханой, Дананг — периферия</div></div>
-              <div class="info"><div class="ik">🔎 Где искать</div><div class="iv">Жильё: Facebook Marketplace (дешевле Airbnb в 2–3 раза), Batdongsan.com.vn. Работа: ITviec.com, LinkedIn. Номады: Da Nang Digital Nomads (TG)</div></div>
-              <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>45 дн безвиз</b> (для россиян) + <b>e-visa 90 дн</b> ($25). Без «правила паузы» — визаран в Лаос/Камбоджу. ВНЖ — через работодателя, сложно. Спец. DN-визы нет</div></div>
-              <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>Нерезидент: 0%</b> на иностранный доход. Резидент (183+ дн): прогрессивный 5–35%. Vietnam не налаживает обмен с РФ по налогам</div></div>
-            </div>
-            <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">ВьетNam дружественна к РФ: безвиз 45 дн, консульство в Дананге. Санкционных ограничений нет. <b>Риск</b>: критика росс. власти теоретически может привести к депортации (крайне маловероятно)</span></div>
-            <div class="deep-src">Источники: Numbeo (июль 2026) · ITviec · Arc.dev · EarthSIMs · Vietnam Briefing. Цены — оценка</div>
-          </div>
-        </details>
-      </div>
-
-      <!-- ====== ГРУЗИЯ ====== -->
-      <div class="tab-panel" id="tab-georgia" role="tabpanel">
-        <div class="country ge">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/ge.png" alt="" class="flag-card" width="24" height="16"> Грузия</div>
-            <h3>Тбилиси</h3>
-            <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Добираться</dt><dd><b>На машине через КПП Верхний Ларс</b> (Сев. Осетия) — самолёт не нужен. Очереди бывают, зимой/летом пик</dd></div>
-            <div><dt>Документы</dt><dd><b>Загранпаспорт обязателен</b>, внутренний не принимают</dd></div>
-            <div><dt>Виза</dt><dd><b>Безвиз до 365 дней</b> (90 дней если на машине). Продление на месте</dd></div>
-            <div><dt>Пояс</dt><dd>МСК+1 (UTC+4) → работа <b>12:00–18:00</b> местного — идеально ✓</dd></div>
-            <div><dt>Валюта</dt><dd>лари (GEL), 1 GEL ≈ $0.38 (~29 ₽)</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Дёшево, красивая природа, вкусная еда, мягкий климат, хороший интернет, МСК+1</dd></div>
-            <div><dt>Слабые</dt><dd>Нужен загран; посещение Абхазии/Юж. Осетии через РФ — могут не пустить обратно в Грузию</dd></div>
-          </dl>
-        </div>
-        <div class="tab-checklist">
-          <h4>Чек-лист · Грузия</h4>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Проверить статус очереди на Верхнем Ларсе<small>сайт МВД РО, пик — лето и праздники</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Убедиться загранпаспорт действует 6+ месяцев</span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Тбилиси на первые дни<small>Booking / Airbnb</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять с собой наличные USD или GEL (обменяешь на месте)<small>в Тбилиси много обменников, курс нормальный</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Искать квартиру в ТГ-канале агентства <a href="https://t.me/kvartiry_v_tbilisi" target="_blank" rel="noopener">@kvartiry_v_tbilisi</a><small>по опыту живущих там — основной рабочий источник; без машины выбирать район у метро</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Заложить реалистичный бюджет: соло ~$1000–1500, с партнёром ×2<small>$500–900 — впритык; по опыту местных комфортнее от $1000</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Уточнить налоговый статус: удалёнка в штате РФ-компании — 13%/15% независимо от резидентства (с 2024)<small>«30% после потери резидентства» — миф для этого случая; но с 1 марта 2026 доход из местного источника в Грузии требует ВНЖ + разрешение</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Если нужен ВНЖ — открыть ИП, обеспечить оборот 50 000 GEL/12 мес + остаток 16 000 GEL, найти «помогатора»<small>платный агент, решает вопросы по-грузински; к нему приходят с конкретным запросом</small></span></label></li>
-          </ul>
-        </div>
-        <details class="deep">
-          <summary>📊 Детально по стране — проверенные данные</summary>
-          <div class="deep-body">
-            <div class="deep-tiles">
-              <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$465–730</div><div class="d">спальные / центр, в&nbsp;месяц</div></div>
-              <div class="tile"><div class="k">Зарплата · IT</div><div class="v">~$1620</div><div class="d">по стране ~$860, Тбилиси ~$975</div></div>
-              <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$200<span>&nbsp;/мес</span></div><div class="d">жизнь без аренды ~$600/мес</div></div>
-            </div>
-            <div class="deep-grid">
-              <div class="info"><div class="ik">🏙 Районы</div><div class="iv">Без машины — <b>Сабуртало</b> (метро, дешевле) или <b>Ваке</b> (престиж, автобусы). Вера — метро «Руставели». Ортачала — дёшево, без метро</div></div>
-              <div class="info"><div class="ik">💳 Банк и карта</div><div class="iv">Только лично (удалёнка для РФ закрыта с 2026): <b>TBC</b> / <b>Bank of Georgia</b>. Нужны загран + местный номер + договор аренды. Мин. остаток 200&nbsp;/&nbsp;500 GEL. Мультивалюта GEL/USD/EUR</div></div>
-              <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv"><b>Тбилиси — 70%</b> вакансий страны, 95% full-time, найм ~35 дней. EN/RU/GE — плюс, часть компаний помогает с релокацией</div></div>
-              <div class="info"><div class="ik">🔎 Где искать</div><div class="iv">Жильё: <a href="https://t.me/kvartiry_v_tbilisi" target="_blank" rel="noopener">@kvartiry_v_tbilisi</a>, myhome.ge, ss.ge, korter.ge. Работа: jobs.ge, jobs.dev.ge, techwave.ge, LinkedIn</div></div>
-              <div class="info"><div class="ik">📋 ВНЖ и работа</div><div class="iv">Трудовой ВНЖ через <b>ИП</b>: оборот <b>≥50 000 GEL/12 мес</b> + остаток ≥16 000 GEL → 1-й ВНЖ на год. <b>С 1 марта 2026</b> доход из местного источника требует ВНЖ + разрешение (удалёнка на зарубеж не подпадает)</div></div>
-              <div class="info"><div class="ik">💰 Налоги РФ</div><div class="iv">Удалёнка в штате РФ-компании — <b>13%/15% независимо от резидентства</b> (с 2024, 389-ФЗ). Ставка 30% — только для «неудалёночных» доходов из РФ</div></div>
-            </div>
-            <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Сильная зависимость от России: <b>пшеница/мука</b> (крупнейший поставщик), <b>газ</b> (~⅓ потребления, 2025 +40%), сезонный обмен электричеством. При обострении — риск по хлебу и энергии</span></div>
-            <div class="deep-src">Источники: Numbeo (июль 2026) · Geostat (Q3 2025) · jobs.ge · банковские гайды 2026. Цены — оценка</div>
-          </div>
-        </details>
-      </div>
-
-      <!-- ====== АРМЕНИЯ ====== -->
-      <div class="tab-panel" id="tab-armenia" role="tabpanel">
-        <div class="country am">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/am.png" alt="" class="flag-card" width="24" height="16"> Армения</div>
-            <h3>Ереван</h3>
-            <div class="price">$500–850 / мес <span class="price-rub" data-usd="500" data-usd-max="850"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Добираться</dt><dd><b>Только самолётом</b> (сухопутной границы с РФ нет; через Грузию — нужен загран). Прямые рейсы из Москвы, ~$150–300</dd></div>
-            <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран <b>не нужен</b></dd></div>
-            <div><dt>Виза</dt><dd><b>Безвиз до 180 дней</b> в году</dd></div>
-            <div><dt>Пояс</dt><dd>МСК+1 (UTC+4) → работа <b>12:00–18:00</b> местного — идеально ✓</dd></div>
-            <div><dt>Валюта</dt><dd>драм (AMD), 1 AMD ≈ $0.0027 (~0.21 ₽)</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Дёшево, вкусная еда, богатая история, загран не нужен, МСК+1, прямые рейсы</dd></div>
-            <div><dt>Слабые</dt><dd>Только самолётом; нет моря; интернет чутка медленнее</dd></div>
-          </dl>
-        </div>
-        <div class="tab-checklist">
-          <h4>Чек-лист · Армения</h4>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Ереван (~$150–300)<small>прямые рейсы: FlyOne, Armenia Aircompany, Победа</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Ереване на первые дни<small>Booking / Airbnb, район Абовяна/Туманяна</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять наличные USD (обменяешь на драм на месте)<small>обменники везде, курс хороший</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Скачать карту offline (2GIS / Maps.me)<small>интернет бывает медленным за городом</small></span></label></li>
-          </ul>
-        </div>
-        <details class="deep">
-          <summary>📊 Детально по стране — проверенные данные</summary>
-          <div class="deep-body">
-            <div class="deep-tiles">
-              <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$550–800</div><div class="d">за&nbsp;месяц, в&nbsp;районе / центр</div></div>
-              <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$350<span>&nbsp;/мес</span></div><div class="d">местная еда + кафе, лаваш и шашлык</div></div>
-              <div class="tile"><div class="k">IT · ICT-сектор</div><div class="v">~$2160<span>&nbsp;/мес</span></div><div class="d">средняя ICT-зарплата, senior — $4000+</div></div>
-            </div>
-            <div class="deep-grid">
-              <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Kentron</b> — центр, кафе, коворкинги, ночная жизнь. <b>Cascade</b> — виды на Арarat, тише. <b>Arabkir (Komitas)</b> — спальный, метро, дешевле. <b>Kond</b> — исторический, стрит-арт</div></div>
-              <div class="info"><div class="ik">💳 Банк и карта</div><div class="iv"><b>Ameriabank</b>, <b>IDBank</b>, <b>Ardshinbank</b> — открытие по заграну. Полный доступ — с ВНЖ. <b>Wise</b> — работает. Карты принимаются повсюду в центре</div></div>
-              <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">ICT-сектор растёт: ~$2160 средняя. Senior SWE: <b>$2500–4000</b>. Team Lead: $3500–5500. Релоканты с зарубежной удалёнкой: $3000–6000+. SYL/EPAM/Tumo — крупные игроки</div></div>
-              <div class="info"><div class="ik">🔎 Где искать</div><div class="iv">Жильё: list.am, realt.am, Airbnb. Работа: LinkedIn, hh.am, workx.am. Коворкинги: Impact Hub, Startup Hub, Demurge</div></div>
-              <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>180 дн безвиз</b> (для россиян — внутренний паспорт!). ВНЖ: через ИП или работодателя. Микро-бизнес: 0% налог при обороте &lt;63k$/год. Новая электронная платформа с 2026</div></div>
-              <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>20% PIT</b> (фиксированный). R&D: 10%. Микро-бизнес: 0%. IT-компании: 1% оборотного. <b>60% возврат PIT</b> для новых IT-сотрудников (3 года). Нет CFC-правил</div></div>
-            </div>
-            <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Зависимость снижается: Армения пивотит в ЕС (аппликация на безвиз, ассоциация). Риски: вторичные санкции за re-export, отток росс. капитала может повлиять на курс. <b>Для номада — макро-риск, не бытовой</b></span></div>
-            <div class="deep-src">Источники: Numbeo (июль 2026) · Armenian-lawyer.com · evncoworking.com · Glassdoor. Цены — оценка</div>
-          </div>
-        </details>
-      </div>
-
-      <!-- ====== СНГ ====== -->
-      <div class="tab-panel" id="tab-cis" role="tabpanel">
-        <div class="cis-grid">
-
-          <!-- Абхазия -->
-          <div class="cis-card">
-            <div class="cis-head">
-              <span class="cis-flag"><span class="ab-flag"></span></span>
-              <div>
-                <div class="cis-name">Абхазия</div>
-                <div class="cis-price">~$200–450 / мес <span class="price-rub" data-usd="200" data-usd-max="450"></span></div>
-              </div>
-            </div>
-            <dl class="specs compact">
-              <div><dt>Добираться</dt><dd>На машине/поезде через Адлер (КПП Псоу) — <b>без самолёта</b></dd></div>
-              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
-              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
-              <div><dt>Валюта</dt><dd>рубль (RUB)</dd></div>
-              <div><dt>Важно</dt><dd>Посещение Абхазии через РФ — могут не пустить в Грузию</dd></div>
-            </dl>
-            <div class="tab-checklist compact">
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут через Адлер / КПП Псоу<small>стоять в очереди 2–8 ч, взять воды и еды</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё (Гагра / Сухуми)<small>Авито Абхазия или напрямую</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к</div><div class="v">$160–265</div><div class="d">за&nbsp;месяц</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$150<span>&nbsp;/мес</span></div><div class="d">местная еда, рынки</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$500–700</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv">Только <b>российские</b> банки / наличные. SWIFT недоступен. Карты не работают за пределами</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Местных IT-вакансий нет. Удалёнка на росс. компании: $800–2000. Инфраструктура слабая</div></div>
-                  <div class="info"><div class="ik">📋 Виза</div><div class="iv">РФ: просто паспорт, 90 дн. Иностранцам — через Россию, нужен въездной бланк</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv">Рубль, российская юрисдикция де-факто. Налоги — по законам РФ</div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv"><b>ЭКСТРЕННЫЙ</b>: де-факто территория РФ. Валюта, границы, военные — всё российское. Международного признания почти нет. Нет SWIFT, нет Visa/MC от местных банков</span></div>
-              </div>
-            </details>
-          </div>
-
-          <!-- Беларусь -->
-          <div class="cis-card">
-            <div class="cis-head">
-              <span class="cis-flag"><img src="https://flagcdn.com/w40/by.png" alt="" class="flag-card" width="20" height="14"></span>
-              <div>
-                <div class="cis-name">Беларусь</div>
-                <div class="cis-price">~$450–750 / мес <span class="price-rub" data-usd="450" data-usd-max="750"></span></div>
-              </div>
-            </div>
-            <dl class="specs compact">
-              <div><dt>Добираться</dt><dd>Поезд (Сапсан Москва→Минск) или машина по М1 — <b>без самолёта</b></dd></div>
-              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
-              <div><dt>Виза</dt><dd>Союзное государство — без ограничений по сроку</dd></div>
-              <div><dt>Валюта</dt><dd>бел. рубль (BYN), 1 BYN ≈ $0.35 (~27 ₽)</dd></div>
-              <div><dt>Плюсы</dt><dd>Близко, русский язык, привычная инфраструктура</dd></div>
-            </dl>
-            <div class="tab-checklist compact">
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Сапсан Москва→Минск или планировать маршрут на машине</span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Минске<small>Booking / Купибилет</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$300–550</div><div class="d">за&nbsp;месяц, Минск</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$250<span>&nbsp;/мес</span></div><div class="d">столовые, местная еда</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$500–750</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Центр (Немига)</b> — кафе, ночная жизнь. <b>Привокзальная</b> — дёшево, шумно. <b>Сухарево</b> — спальный. <b>Уручье</b> — новые ЖК</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Беларусбанк</b>, <b>Приорбанк</b> — открытие по внутреннему паспорту РФ. Карты работают в РФ. SWIFT ограничен</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">EPAM, IBA, Wargaming — крупные. Junior: $600–1000, Senior: $1500–2500. IT Park: <b>0% налога</b> для ИП</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv">Союзное государство: <b>без ограничений</b>. ПМЖ через брак, работу, или учёбу. ИП на себя — сложно</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv">IT Park: 0% PIT (для ИП). Вне IT Park: <b>13%</b> PIT. НДС 20%. Договоры с РФ — через АСМ (Автоматизированная Система Мониторинга)</div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Союзное государство — <b>де-факто extensions РФ</b>. Санкции ЕС на многих белорусов. Карты работают в РФ, но за пределами — ограничения. Для номада: безопасно, но не «заграница»</span></div>
-              </div>
-            </details>
-          </div>
-
-          <!-- Казахстан -->
-          <div class="cis-card">
-            <div class="cis-head">
-              <span class="cis-flag"><img src="https://flagcdn.com/w40/kz.png" alt="" class="flag-card" width="20" height="14"></span>
-              <div>
-                <div class="cis-name">Казахстан</div>
-                <div class="cis-price">~$400–700 / мес <span class="price-rub" data-usd="400" data-usd-max="700"></span></div>
-              </div>
-            </div>
-            <dl class="specs compact">
-              <div><dt>Добираться</dt><dd>На машине через Оренбург/Астрахань или поездом — <b>без самолёта</b></dd></div>
-              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
-              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
-              <div><dt>Валюта</dt><dd>тенге (KZT), 1 KZT ≈ $0.0021 (~0.16 ₽)</dd></div>
-              <div><dt>Плюсы</dt><dd>Близко, русский распространён, дёшево</dd></div>
-            </dl>
-            <div class="tab-checklist compact">
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут: Оренбург → Орск → Алматы или Астрахань → Атырау<small>граница, документы на авто</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Алматы / Астане<small>Avito.kz, Купилайв</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$300–500</div><div class="d">за&nbsp;месяц, Алматы</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$220<span>&nbsp;/мес</span></div><div class="d">столовые, базары</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$500–700</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Алматы</b>: <b>Алмали</b> — центр, кафе, IT. <b>Бостандык</b> — парки, виды. <b>Медеу</b> — горы, тише. <b>Астана</b>: <b>Left Bank</b> — бизнес-центр, <b>Right Bank</b> — жилой</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Halyk Bank</b>, <b>Kaspi</b> — открытие по заграну. Kaspi Gold — мгновенно в терминале. Карты <b>работают</b> за рубежом! Wise — ограниченно</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Astana Hub: <b>3% налог</b> для IT-компаний. Junior: $800–1200, Senior: $1800–3000. EPAM, Kolesa, Chocofamily — крупные</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>90 дн безвиз</b>. ВНЖ: через Investment Visa ($50k+), или через работодателя. В temporary residence permit — 1 год</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>10% PIT</b> (фиксированный). НДС: для IT — льготы. Двойное налогообложение с РФ — <b>нет договора</b> (осторожно)</div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Казахстан нейтрален: безвиз для россиян, карты работают. <b>Но</b>: нет налогового договора с РФ — двойное налогообложение. Для номада — безопасно, но планируй налоги</span></div>
-              </div>
-            </details>
-          </div>
-
-          <!-- Кыргызстан -->
-          <div class="cis-card">
-            <div class="cis-head">
-              <span class="cis-flag"><img src="https://flagcdn.com/w40/kg.png" alt="" class="flag-card" width="20" height="14"></span>
-              <div>
-                <div class="cis-name">Кыргызстан</div>
-                <div class="cis-price">~$200–500 / мес <span class="price-rub" data-usd="200" data-usd-max="500"></span></div>
-              </div>
-            </div>
-            <dl class="specs compact">
-              <div><dt>Добираться</dt><dd>На машине через Казахстан (~3000 км) или самолётом</dd></div>
-              <div><dt>Документы</dt><dd><b>Внутренний паспорт РФ</b> — загран не нужен</dd></div>
-              <div><dt>Виза</dt><dd>Безвиз до 90 дней</dd></div>
-              <div><dt>Валюта</dt><dd>сом (KGS), 1 KGS ≈ $0.011 (~0.88 ₽)</dd></div>
-              <div><dt>Плюсы</dt><dd>Природа (Иссык-Куль), дёшево, русский язык</dd></div>
-            </dl>
-            <div class="tab-checklist compact">
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Маршрут через Казахстан (Ташкент → Бишкек) или прямой рейс<small>из Москвы есть рейсы</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в Бишкеке / на Иссык-Куле<small>Avito.kg, Booking</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$360–500</div><div class="d">за&nbsp;месяц, Бишкек</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$180<span>&nbsp;/мес</span></div><div class="d">шашлык, лагман, бешбармак</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$500–800</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Центр</b> — Ошский базар, кафе, IT-компании. <b>Джал-Абад</b> — спальный, дешевле. <b>Иссык-Куль</b> — курорт, сезонный (лето)</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Mbank</b>, <b>KICB</b>, <b>Bakai Bank</b> — открытие по заграну. Карты работают за рубежом. Wise — ограниченно</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Junior: $600–900, Senior: $1200–2000. Удалёнка: $1500–3000. IT Park: <b>0% налога</b> для ИП</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>90 дн безвиз</b>. ВНЖ: через Investment Visa ($50k+), или через работодателя. Temporary residence permit — 1 год</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>10% PIT</b> (фиксированный). НДС: для IT — льготы. Двойное налогообложение с РФ — <b>нет договора</b></div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Кыргызстан нейтрален: безвиз для россиян, карты работают. <b>Но</b>: нет налогового договора с РФ — двойное налогообложение. Для номада — безопасно, но планируй налоги</span></div>
-              </div>
-            </details>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ====== ФИЛИППИНЫ ====== -->
-      <div class="tab-panel" id="tab-philippines" role="tabpanel">
-        <div class="country ph">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/ph.png" alt="" class="flag-card" width="24" height="16"> Филиппины</div>
-            <h3>Себу</h3>
-            <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>30 дней безвиз</b>, продление до 36 мес на месте. DNV-виза ~$24k/год — для постоянного пребывания</dd></div>
-            <div><dt>Пояс</dt><dd>МСК+5 (UTC+8) → работа <b>до 22:00</b> местного — тяжеловато</dd></div>
-            <div><dt>Перелёт</dt><dd>С пересадкой (прямых нет), ~$500–900 через Бангкок/Дубай/Сингапур</dd></div>
-            <div><dt>Валюта</dt><dd>php (PHP), 1 PHP ≈ $0.016 (~1.3 ₽)</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Английский — гош язык, дёшево, море, о-ва, DNV-виза дляITT</dd></div>
-            <div><dt>Слабые</dt><dd>МСК+5, сезон тайфунов (июнь–ноябрь), нет прямых рейсов</dd></div>
-          </dl>
-        </div>
-        <div class="tab-checklist">
-          <h4>Чек-лист · Филиппины</h4>
-          <ul class="checks">
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет с пересадкой Москва→Себу (~$500–900)<small>через Бангкок/Дубай/Сингапур; сравнить цены на trip.com</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Подготовить docs для безвиза: загран 6+ мес, обратный билет или onward<small>на миграционном могут попросить proof of funds</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Спланировать продление (если >30 дней): иммиграция в Себу / визаран<small>визаран в Малайзию/Таиланд — заодно посмотришь</small></span></label></li>
-            <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оценить DNV-визу ($24k/год) — если понравится, подавать через 2–3 мес<small>для IT远程工作者, требует proof of income $2k+/мес</small></span></label></li>
-          </ul>
-        </div>
-        <details class="deep">
-          <summary>📊 Детально по стране — проверенные данные</summary>
-          <div class="deep-body">
-            <div class="deep-tiles">
-              <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$335–545</div><div class="d">за&nbsp;месяц, в&nbsp;районе / центр</div></div>
-              <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$300<span>&nbsp;/мес</span></div><div class="d">местная еда + кафе, без западных ресторанов</div></div>
-              <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$608<span>&nbsp;/мес</span></div><div class="d">по стране, без жилья — LivingCost.org</div></div>
-            </div>
-            <div class="deep-grid">
-              <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>IT Park / Cebu Business Park</b> — центр номадов, кафе, коворкинги. <b>Lahug</b> — тише, рядом с IT Park. <b>Mactan</b> — остров, пляжи, кондо. <b>Cebu City Centre</b> — бюджетно, но шумно</div></div>
-              <div class="info"><div class="ik">💳 Банк и карта</div><div class="iv"><b>BDO</b>, <b>BPI</b>, <b>Metrobank</b> — нужны загран + proof of address (hard для номадов). <b>Wise</b> — основной канал. Карты широко принимаются в mall-ах</div></div>
-              <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Местный: junior $500–800, senior $1500–2500. Удалёнка: <b>$2000–5000</b>. Английский — официальный язык, плюс для удалёнки. BPO-индустрия огромная</div></div>
-              <div class="info"><div class="ik">🔎 Где искать</div><div class="iv">Жильё: Facebook Marketplace, Lamudi.com.ph. Работа: JobStreet, LinkedIn, OnlineJobs.ph. Номады: Cebu Digital Nomads (TG)</div></div>
-              <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>30 дн безвиз</b>, продление до 36 мес на месте. DNV-виза ~$24k/год (для IT, нужен доход $2k+/мес). Безвиз — proof of funds</div></div>
-              <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>Нерезидент: 0%</b> на иностранный доход. Резидент (183+ дн): прогрессивный 0–35%. Филиппины — территориальная система</div></div>
-            </div>
-            <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Филиппины нейтральны: безвиз для россиян, нет санкций. <b>Но</b>: инфраструктура слабее Азии, интернет нестабильный за городом, скам номадов — реальность</span></div>
-            <div class="deep-src">Источники: Numbeo (июль 2026) · LivingCost.org · OnlineJobs.ph. Цены — оценка</div>
-          </div>
-        </details>
-      </div>
-
-      <!-- ====== ПАРАГВАЙ ====== -->
-      <div class="tab-panel" id="tab-paraguay" role="tabpanel">
-        <div class="country py">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/py.png" alt="" class="flag-card" width="24" height="16"> Парагвай</div>
-            <h3>Асунсьон</h3>
-            <div class="price">$400–700 / мес <span class="price-rub" data-usd="400" data-usd-max="700"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>90 дней безвиз</b>, штамп на въезде. ВНЖ — один из самых простых в Латам</dd></div>
-            <div><dt>Пояс</dt><dd>МСК−7 (UTC−4) → работа <b>ночью</b> — плохо для удалёнки</dd></div>
-            <div><dt>Перелёт</dt><dd>С 2–3 пересадками, ~$800–1 500, 20–30 ч</dd></div>
-            <div><dt>Валюта</dt><dd>гуарани (PYG), 1 PYG ≈ $0.00013 (~0.01 ₽)</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Очень дёшево, лёгкий ВНЖ, налоговый рай (10% фикс.), испанский</dd></div>
-            <div><dt>Слабые</dt><dd>МСК−7, далеко, слабая инфраструктура, испанский обязателен</dd></div>
-          </dl>
-        </div>
-            <div class="tab-checklist">
-              <h4>Чек-лист · Парагвай</h4>
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет с пересадками Москва→Асунсьон (~$800–1 500)<small>через Дубай/Мадрид/Буэнос-Айрес; длинные стыковки</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять перевод на испанском + docs для въезда<small>штамп на въезде — 90 дней, proof of funds не просят</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Изучить процесс ВНЖ заранее (через консульство или на месте)<small>один из самых быстрых и дешёвых в Латинской Америке</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Начать учить базовый испанский (Duolingo / YouTube)<small>без языка будет сложно вне отелей</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально по стране — проверенные данные</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$250–400</div><div class="d">за&nbsp;месяц, Асунсьон</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$180<span>&nbsp;/мес</span></div><div class="d">местная еда,市场</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$400–700</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Manorá</b> — центр, кафе, IT. <b>Recoleta</b> — тише, парки. <b>Piantanito</b> — дёшево, шумно. <b>Ciudad Del Este</b> — налоговая зона</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Banco Atlas</b>, <b>Sudameris</b> — открытие по заграну. Карты работают за рубежом. Wise — ограниченно</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Junior: $500–800, Senior: $1000–1800. Удалёнка: $1500–3000. IT Park: <b>0% налога</b> для ИП</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>90 дн безвиз</b>. ВНЖ: через Investment Visa ($50k+), или через работодателя. Temporary residence permit — 1 год</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>10% PIT</b> (фиксированный). НДС: для IT — льготы. Двойное налогообложение с РФ — <b>есть договор</b></div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Парагвай нейтрален: безвиз для россиян, карты работают. <b>Но</b>: нет налогового договора с РФ — двойное налогообложение. Для номада — безопасно, но планируй налоги</span></div>
-              </div>
-            </details>
-          </div>
-
-      <!-- ====== БРАЗИЛИЯ ====== -->
-      <div class="tab-panel" id="tab-brazil" role="tabpanel">
-        <div class="country br">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/br.png" alt="" class="flag-card" width="24" height="16"> Бразилия</div>
-            <h3>Рио / Сан-Паулу</h3>
-            <div class="price">$600–1 000 / мес <span class="price-rub" data-usd="600" data-usd-max="1000"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>E-visa ~$80</b> (обязательна для россиян с 2024), 10 лет, 90 дней за полгода</dd></div>
-            <div><dt>Пояс</dt><dd>МСК−6 (UTC−3) → работа <b>вечером</b> местного</dd></div>
-            <div><dt>Перелёт</dt><dd>С 1–2 пересадками, ~$700–1 200 через Дубай/Стамбул</dd></div>
-            <div><dt>Валюта</dt><dd>реал (BRL), 1 BRL ≈ $0.17 (~13 ₽)</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Огромная страна, пляжи, тёплый климат全年, культура, еда</dd></div>
-            <div><dt>Слабые</dt><dd>МСК−6, e-visa обязательна, безопасность (карманные кражи)</dd></div>
-          </dl>
-        </div>
-            <div class="tab-checklist">
-              <h4>Чек-лист · Бразилия</h4>
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Оформить <b>e-visa</b> (~$80, 10 лет) заблаговременно<small>evisa.vfrancvisa.com — подать за 2–4 недели до вылета</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Рио/СП с пересадкой (~$700–1 200)<small>через Дубай/Стамбул/Аддис-Абебу</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Забронировать жильё в безопасном районе<small>Copacabana, Ipanema (Рио) / Pinheiros, Vila Madalena (СП)</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять наличные USD → обменять на реалы на месте<small>обменники в аэропорту и городе, курс нормальный</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально по стране — проверенные данные</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$350–600</div><div class="d">за&nbsp;месяц, Рио/СП</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$250<span>&nbsp;/мес</span></div><div class="d">местная еда, льютасо</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$600–1000</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Рио</b>: <b>Copacabana</b> — пляж, кафе. <b>Ipanema</b> — дороже, тише. <b>Lapa</b> — ночная жизнь. <b>СП</b>: <b>Pinheiros</b> — IT-центр. <b>Vila Madalena</b> — арт, кафе</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Nubank</b>, <b>Inter</b> — digital-only, открытие по заграну (ограниченно). Карты работают за рубежом. Wise — основной канал</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Junior: $800–1200, Senior: $1800–3000. Удалёнка: $2000–4000. Nubank, iFood, Loft — крупные</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>E-visa ~$80</b> (10 лет). Temporary visa — через работодателя. ВНЖ: через Investment Visa ($50k+)</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>Progressive 0–27%</b>. НДС: 17%. Двойное налогообложение с РФ — <b>есть договор</b></div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Бразилия нейтральна: e-visa для россиян, карты работают. <b>Но</b>: безопасность (карманные кражи), инфраструктура слабее. Для номада — безопасно, но будь осторожен</span></div>
-              </div>
-            </details>
-          </div>
-
-      <!-- ====== АРГЕНТИНА ====== -->
-      <div class="tab-panel" id="tab-argentina" role="tabpanel">
-        <div class="country ar">
-          <div class="country-top">
-            <div class="flag"><img src="https://flagcdn.com/w40/ar.png" alt="" class="flag-card" width="24" height="16"> Аргентина</div>
-            <h3>Буэнос-Айрес</h3>
-            <div class="price">$500–900 / мес <span class="price-rub" data-usd="500" data-usd-max="900"></span></div>
-          </div>
-          <dl class="specs">
-            <div><dt>Виза</dt><dd><b>90 дней безвиз</b>, штамп на въезде</dd></div>
-            <div><dt>Пояс</dt><dd>МСК−6 (UTC−3) → работа <b>вечером</b> местного</dd></div>
-            <div><dt>Перелёт</dt><dd>С 2–3 пересадками, ~$800–1 400 через Дубай/Стамбул/Мадрид</dd></div>
-            <div><dt>Валюта</dt><dd>песо (ARS), очень волатильный; «чёрный» курс лучше</dd></div>
-            <div><dt>Сильные стороны</dt><dd>Европейская культура, еда/вино, сейчас очень дёшево, безвиз</dd></div>
-            <div><dt>Слабые</dt><dd>МСК−6, далеко (20+ ч), экономическая нестабильность, инфляция</dd></div>
-          </dl>
-        </div>
-            <div class="tab-checklist">
-              <h4>Чек-лист · Аргентина</h4>
-              <ul class="checks">
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Купить билет Москва→Буэнос-Айрес (~$800–1 400)<small>через Дубай/Стамбул/Мадрид; часто длинные стыковки</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Взять USD наличными (лучший курс обмена на месте)<small>в БА «чёрный» курс песо всегда выгоднее официального</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Изучить район Palermo / Recoleta для жилья<small>безопасные, популярные среди релокантов</small></span></label></li>
-                <li><label class="chk"><input type="checkbox"><span class="box"></span><span class="chk-txt">Скачать приложение Western Union / Wise для обмена<small>для перевода и обмена по выгодному курсу</small></span></label></li>
-              </ul>
-            </div>
-            <details class="deep">
-              <summary>📊 Детально по стране — проверенные данные</summary>
-              <div class="deep-body">
-                <div class="deep-tiles">
-                  <div class="tile"><div class="k">Аренда 1-к · долгосрок</div><div class="v">$300–550</div><div class="d">за&nbsp;месяц, БА</div></div>
-                  <div class="tile"><div class="k">Еда · 1 человек</div><div class="v">~$200<span>&nbsp;/мес</span></div><div class="d">asado, эмпанады, вино</div></div>
-                  <div class="tile"><div class="k">Стоимость жизни</div><div class="v">$500–900</div><div class="d">полный бюджет / мес</div></div>
-                </div>
-                <div class="deep-grid">
-                  <div class="info"><div class="ik">🏙 Районы</div><div class="iv"><b>Palermo</b> — центр номадов, кафе, коворкинги. <b>Recoleta</b> — тише, парки. <b>Belgrano</b> — спальный, метро. <b>San Telmo</b> — арт, антиквариат</div></div>
-                  <div class="info"><div class="ik">💳 Банк</div><div class="iv"><b>Banco Galicia</b>, <b>Santander</b> — открытие по заграну (ограниченно). Карты работают за рубежом. Wise — основной канал</div></div>
-                  <div class="info"><div class="ik">💻 IT-рынок</div><div class="iv">Junior: $800–1200, Senior: $1800–3000. Удалёнка: $2000–4000. MercadoLibre, Globant, Auth0 — крупные</div></div>
-                  <div class="info"><div class="ik">📋 Виза и ВНЖ</div><div class="iv"><b>90 дн безвиз</b>. Temporary visa — через работодателя. ВНЖ: через Investment Visa ($50k+)</div></div>
-                  <div class="info"><div class="ik">💰 Налоги</div><div class="iv"><b>Progressive 0–35%</b>. НДС: 21%. Двойное налогообложение с РФ — <b>есть договор</b></div></div>
-                </div>
-                <div class="deep-risk"><span class="rk">Риск · РФ</span><span class="rv">Аргентина нейтральна: безвиз для россиян, карты работают. <b>Но</b>: инфляция (100%+), курс песо нестабилен. Для номада — безопасно, но планируй финансы</span></div>
-              </div>
-            </details>
-          </div>
-
-    </div>
+    </details>
   </section>
-
-
 
   <footer>
     <div class="footer-row">
@@ -749,6 +113,7 @@
   </footer>
 </div>
 
-<script src="./app.js?v=20260712" defer></script>
+<script src="./countries.js?v=20260719"></script>
+<script src="./app.js?v=20260719" defer></script>
 </body>
 </html>

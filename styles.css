@@ -413,6 +413,69 @@ footer a { color: var(--accent-ink); }
 .sw-badge { font-family: var(--mono); font-size: 11px; color: var(--teal-ink); display:inline-flex; align-items:center; gap:6px; }
 .sw-badge::before { content:""; width:7px;height:7px;border-radius:50%; background: var(--teal); }
 
+/* ---------- Country selection grid ---------- */
+.country-select-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.country-select-card {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 14px 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .2s, box-shadow .2s, transform .1s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow);
+}
+.country-select-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 12px rgba(207,115,32,.15);
+  transform: translateY(-2px);
+}
+.country-select-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.country-select-card.th:hover { border-color: var(--accent); }
+.country-select-card.vn:hover { border-color: var(--teal); }
+.country-select-card.ge:hover { border-color: var(--blue); }
+.country-select-card.am:hover { border-color: var(--rose); }
+.country-select-card.ph:hover { border-color: var(--blue); }
+.country-select-card.py:hover { border-color: var(--accent); }
+.country-select-card.br:hover { border-color: var(--teal); }
+.country-select-card.ar:hover { border-color: var(--rose); }
+.country-select-card.cis:hover { border-color: var(--ink-soft); }
+
+.csc-flag { font-size: 28px; line-height: 1; }
+.csc-flag .flag-img { width: 28px; height: 20px; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); object-fit: cover; }
+.csc-name { font-size: 16px; font-weight: 800; margin-top: 2px; }
+.csc-city { font-size: 12px; color: var(--muted); font-family: var(--mono); letter-spacing: .04em; }
+.csc-price { font-family: var(--mono); font-weight: 700; font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+.csc-visa { font-size: 11px; color: var(--muted); font-family: var(--mono); letter-spacing: .03em; }
+
+/* ---------- Roadmap section ---------- */
+.sec-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.change-country-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent-ink); background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  border-radius: 7px; padding: 6px 12px; cursor: pointer; transition: .15s;
+  white-space: nowrap;
+}
+.change-country-btn:hover {
+  background: var(--accent); color: #fff;
+}
+
 @media (max-width: 720px) {
   .stats { grid-template-columns: 1fr 1fr; }
   .infogrid { grid-template-columns: 1fr; }
@@ -422,4 +485,14 @@ footer a { color: var(--accent-ink); }
   .tab-btn { font-size: 11px; padding: 8px 12px; }
   .tab-nav { gap: 0; }
   dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
+  .country-select-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .country-select-card { padding: 14px 10px 12px; }
+  .csc-name { font-size: 14px; }
+  .csc-price { font-size: 12px; }
+}
+@media (max-width: 480px) {
+  .country-select-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .country-select-card { padding: 12px 8px 10px; }
+  .csc-flag { font-size: 24px; }
+  .csc-name { font-size: 13px; }
 }
