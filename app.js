@@ -161,6 +161,10 @@
   // ---- Countdown ----
   var DEPARTURE_KEY = "reloc-departure-date";
   var departureInput = document.getElementById("departure-date");
+  var departureDisplay = document.getElementById("departure-display");
+  var departureDays = document.getElementById("departure-days");
+
+  var MONTHS_RU = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
 
   function getDepartureDate() {
     var saved = null;
@@ -177,8 +181,16 @@
     var now = new Date();
     var diff = Math.ceil((target - now) / 86400000);
     var el = document.getElementById("cd-num");
-    if (!el) return;
-    el.textContent = diff > 0 ? String(diff) : (diff === 0 ? "0" : "—");
+    if (el) el.textContent = diff > 0 ? String(diff) : (diff === 0 ? "0" : "—");
+
+    if (departureDisplay) {
+      departureDisplay.textContent = target.getDate() + " " + MONTHS_RU[target.getMonth()] + " " + target.getFullYear();
+    }
+    if (departureDays) {
+      if (diff > 0) departureDays.textContent = "через " + diff + " дн.";
+      else if (diff === 0) departureDays.textContent = "сегодня!";
+      else departureDays.textContent = "вылет состоялся";
+    }
   }
 
   function syncDateInput() {
