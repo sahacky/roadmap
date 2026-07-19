@@ -6,7 +6,7 @@
 var COUNTRIES = {
 
   phuket: {
-    name: "Пхукет",
+    name: "Таиланд",
     country: "Таиланд",
     flag: "th",
     flagUrl: "https://flagcdn.com/w40/th.png",
@@ -104,7 +104,7 @@ var COUNTRIES = {
   },
 
   danang: {
-    name: "Дананг",
+    name: "Вьетнам",
     country: "Вьетнам",
     flag: "vn",
     flagUrl: "https://flagcdn.com/w40/vn.png",

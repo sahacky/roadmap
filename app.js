@@ -353,7 +353,7 @@
       '<div class="cc-top">' +
       '<span class="cc-flag">' + flagHtml + '</span>' +
       '<span class="cc-name">' + c.country + '</span>' +
-      (c.name !== c.country ? '<span class="cc-city">' + c.name + '</span>' : '') +
+      (c.city ? '<span class="cc-city">' + c.city + '</span>' : '') +
       (c.price ? '<span class="cc-price">' + c.price + '</span>' : '') +
       '</div>' +
       specsHtml;
