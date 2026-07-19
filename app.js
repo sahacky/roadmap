@@ -270,6 +270,24 @@
     selectSection.style.display = "";
     roadmapSection.style.display = "none";
     deepSection.style.display = "none";
+    // Reset stats
+    if (countryDisplay) countryDisplay.textContent = "Выбери страну";
+    if (countryVisa) countryVisa.textContent = "";
+    if (budgetDisplay) budgetDisplay.textContent = "—";
+    if (budgetRub) budgetRub.textContent = "";
+    if (criticalText) {
+      criticalText.innerHTML = "<b>Самый узкий узел — не виза, а деньги.</b> Платёжный контур (наличные&nbsp;USD + USDT + карта иностранного банка) надо начать собирать <b>в&nbsp;первые дни</b> — он готовится дольше всего.";
+    }
+    // Reset progress
+    var pgDone = document.getElementById("pg-done");
+    var pgTotal = document.getElementById("pg-total");
+    var pgBar = document.getElementById("pg-bar");
+    if (pgDone) pgDone.textContent = "0";
+    if (pgTotal) pgTotal.textContent = "0";
+    if (pgBar) pgBar.style.width = "0%";
+    // Clear timeline
+    var timeline = document.getElementById("timeline");
+    if (timeline) timeline.innerHTML = "";
   }
 
   if (changeCountryBtn) {
