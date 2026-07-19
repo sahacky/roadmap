@@ -275,6 +275,8 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 [data-country="py"].tab-btn.active { background: #F6E7D3; border-bottom-color: var(--accent); }
 [data-country="br"].tab-btn.active { background: #DFEDE9; border-bottom-color: var(--teal); }
 [data-country="ar"].tab-btn.active { background: #F8DEE3; border-bottom-color: var(--rose); }
+[data-country="rs"].tab-btn.active { background: #FDECEA; border-bottom-color: #e74c3c; }
+[data-country="cn"].tab-btn.active { background: #FDECEA; border-bottom-color: #c0392b; }
 [data-country="cis"].tab-btn.active { background: var(--line-soft); border-bottom-color: var(--ink-soft); }
 .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .tab-panel { display: none; }
@@ -519,6 +521,8 @@ footer a { color: var(--accent-ink); }
 .country-select-card.py:hover { border-color: var(--accent); }
 .country-select-card.br:hover { border-color: var(--teal); }
 .country-select-card.ar:hover { border-color: var(--rose); }
+.country-select-card.rs:hover { border-color: #e74c3c; }
+.country-select-card.cn:hover { border-color: #c0392b; }
 .country-select-card.cis:hover { border-color: var(--ink-soft); }
 
 .csc-flag { font-size: 28px; line-height: 1; }
