@@ -312,6 +312,7 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 .cc-flag .flag-img { width: 34px; height: auto; border-radius: 3px; display: block; box-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 60%, transparent); }
 .cc-flag .ab-flag { width: 34px; height: 22px; display: block; }
 .cc-name { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.cc-city { font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 6px; }
 .cc-price { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-left: auto; white-space: nowrap; }
 
 dl.specs { margin: 0; padding: 8px 22px 18px; }
@@ -545,6 +546,7 @@ dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
 .cc-flag .flag-img { width: 30px; }
 .cc-flag .ab-flag { width: 30px; height: 20px; }
 .cc-name { font-size: 18px; }
+.cc-city { font-size: 13px; }
 .csc-name { font-size: 14px; }
 .csc-price { font-size: 12px; }
 }

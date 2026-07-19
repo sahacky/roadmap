@@ -352,7 +352,8 @@
     countryCard.innerHTML =
       '<div class="cc-top">' +
       '<span class="cc-flag">' + flagHtml + '</span>' +
-      '<span class="cc-name">' + c.name + '</span>' +
+      '<span class="cc-name">' + c.country + '</span>' +
+      (c.name !== c.country ? '<span class="cc-city">' + c.name + '</span>' : '') +
       (c.price ? '<span class="cc-price">' + c.price + '</span>' : '') +
       '</div>' +
       specsHtml;
