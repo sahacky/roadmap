@@ -301,6 +301,7 @@ dl.specs > div:first-child { border-top: none; }
 dl.specs dt { font-family: var(--mono); font-size: 11px; letter-spacing:.06em; text-transform:uppercase; color: var(--muted); padding-top: 2px; }
 dl.specs dd { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
 dl.specs dd b { color: var(--ink); font-weight: 650; }
+dl.specs dd a, .chk-txt a { color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
 /* compact specs for CIS mini-cards */
 dl.specs.compact > div { grid-template-columns: 78px 1fr; padding: 7px 0; }
