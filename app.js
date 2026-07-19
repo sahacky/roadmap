@@ -159,15 +159,47 @@
   });
 
   // ---- Countdown ----
+  var DEPARTURE_KEY = "reloc-departure-date";
+  var departureInput = document.getElementById("departure-date");
+
+  function getDepartureDate() {
+    var saved = null;
+    try { saved = localStorage.getItem(DEPARTURE_KEY); } catch (e) {}
+    if (saved) {
+      var d = new Date(saved + "T00:00:00");
+      if (!isNaN(d.getTime())) return d;
+    }
+    return new Date(2026, 7, 10, 0, 0, 0);
+  }
+
   function countdown() {
-    var target = new Date(2026, 7, 10, 0, 0, 0);
+    var target = getDepartureDate();
     var now = new Date();
     var diff = Math.ceil((target - now) / 86400000);
     var el = document.getElementById("cd-num");
     if (!el) return;
-    el.textContent = diff > 0 ? String(diff) : (diff === 0 ? "0" : "\u2014");
+    el.textContent = diff > 0 ? String(diff) : (diff === 0 ? "0" : "—");
   }
+
+  function syncDateInput() {
+    var d = getDepartureDate();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    if (departureInput) departureInput.value = y + "-" + m + "-" + day;
+  }
+
+  if (departureInput) {
+    departureInput.addEventListener("change", function () {
+      if (departureInput.value) {
+        try { localStorage.setItem(DEPARTURE_KEY, departureInput.value); } catch (e) {}
+        countdown();
+      }
+    });
+  }
+
   countdown();
+  syncDateInput();
 
   // ---- USD/RUB rate ----
   var USD_RATE = 76.40;
