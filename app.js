@@ -457,7 +457,47 @@
     // Source
     var srcHtml = '<div class="deep-src">' + deep.src + '</div>';
 
-    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml;
+    // Weather (optional)
+    var weatherHtml = "";
+    if (c.weather && c.weather.seasons && c.weather.seasons.length) {
+      var w = c.weather;
+      weatherHtml = '<div class="deep-sub-h">☀ Погода и сезоны</div>';
+      if (w.climate) weatherHtml += '<div class="wx-climate">' + w.climate + '</div>';
+      weatherHtml += '<div class="wx-grid">';
+      for (var s = 0; s < w.seasons.length; s++) {
+        var se = w.seasons[s];
+        weatherHtml +=
+          '<div class="wx-card">' +
+          '<div class="wx-head"><span class="wx-s">' + se.s + '</span><span class="wx-m">' + se.m + '</span></div>' +
+          '<div class="wx-temp"><b>' + se.hi + '°</b><span>ночью ' + se.lo + '°</span></div>' +
+          '<div class="wx-d">' + se.d + '</div>' +
+          '</div>';
+      }
+      weatherHtml += '</div>';
+      if (w.hazards) weatherHtml += '<div class="wx-haz"><span class="wx-haz-k">Катаклизмы</span>' + w.hazards + '</div>';
+      if (w.src) weatherHtml += '<div class="deep-src">' + w.src + '</div>';
+    }
+
+    // Culture (optional)
+    var cultureHtml = "";
+    if (c.culture && (c.culture.ok || c.culture.avoid)) {
+      var cu = c.culture;
+      cultureHtml = '<div class="deep-sub-h">👥 Менталитет и обычаи</div><div class="cult-grid">';
+      if (cu.ok && cu.ok.length) {
+        cultureHtml += '<div class="cult-col ok"><div class="cult-h">Принято</div><ul>';
+        for (var o = 0; o < cu.ok.length; o++) cultureHtml += '<li>' + cu.ok[o] + '</li>';
+        cultureHtml += '</ul></div>';
+      }
+      if (cu.avoid && cu.avoid.length) {
+        cultureHtml += '<div class="cult-col no"><div class="cult-h">Избегать</div><ul>';
+        for (var n = 0; n < cu.avoid.length; n++) cultureHtml += '<li>' + cu.avoid[n] + '</li>';
+        cultureHtml += '</ul></div>';
+      }
+      cultureHtml += '</div>';
+      if (cu.src) cultureHtml += '<div class="deep-src">' + cu.src + '</div>';
+    }
+
+    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml + weatherHtml + cultureHtml;
   }
 
   // ---- Checkboxes ----
