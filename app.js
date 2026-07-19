@@ -328,6 +328,29 @@
     return d.getDate() + " " + MONTHS_RU[d.getMonth()];
   }
 
+  function renderCountryCard(countryKey) {
+    var c = COUNTRIES[countryKey];
+    if (!c || !countryCard) return;
+
+    var specsHtml = "";
+    if (c.specs && c.specs.length) {
+      specsHtml = '<dl class="specs">';
+      for (var i = 0; i < c.specs.length; i++) {
+        var s = c.specs[i];
+        specsHtml += '<div><dt>' + s.dt + '</dt><dd>' + s.dd + '</dd></div>';
+      }
+      specsHtml += '</dl>';
+    }
+
+    countryCard.innerHTML =
+      '<div class="cc-top">' +
+      '<span class="cc-flag">' + (c.flag || "") + '</span>' +
+      '<span class="cc-name">' + c.name + '</span>' +
+      (c.price ? '<span class="cc-price">' + c.price + '</span>' : '') +
+      '</div>' +
+      specsHtml;
+  }
+
   function renderTimeline(countryKey) {
     var c = COUNTRIES[countryKey];
     if (!c) return;

@@ -490,6 +490,10 @@ dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
 .promo-banner { font-size: 13px; padding: 10px 14px; margin-top: 12px; background: var(--teal-soft); color: var(--teal-ink); border: 1px solid color-mix(in srgb, var(--teal) 20%, transparent); border-radius: 10px; line-height: 1.45; }
 .promo-banner a { color: var(--teal-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--teal-ink) 40%, transparent); }
 .promo-badge { font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--teal); color: var(--paper); border-radius: 4px; padding: 2px 6px; margin-right: 4px; vertical-align: middle; }
+.cc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.cc-flag { font-size: 32px; line-height: 1; }
+.cc-name { font-size: 20px; font-weight: 800; }
+.cc-price { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-left: auto; }
 .csc-name { font-size: 14px; }
 .csc-price { font-size: 12px; }
 }
