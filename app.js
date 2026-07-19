@@ -342,9 +342,16 @@
       specsHtml += '</dl>';
     }
 
+    var flagHtml = "";
+    if (c.flagCustom === "ab") {
+      flagHtml = '<span class="ab-flag"></span>';
+    } else if (c.flagUrl) {
+      flagHtml = '<img src="' + c.flagUrl + '" alt="" class="flag-img" width="28" height="20">';
+    }
+
     countryCard.innerHTML =
       '<div class="cc-top">' +
-      '<span class="cc-flag">' + (c.flag || "") + '</span>' +
+      '<span class="cc-flag">' + flagHtml + '</span>' +
       '<span class="cc-name">' + c.name + '</span>' +
       (c.price ? '<span class="cc-price">' + c.price + '</span>' : '') +
       '</div>' +

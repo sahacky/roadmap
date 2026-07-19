@@ -181,6 +181,7 @@ h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -.02em
 /* ---------- Section ---------- */
 section { margin-top: 40px; }
 .sec-head { display:flex; align-items:baseline; gap:12px; margin-bottom: 18px; flex-wrap:wrap; }
+.sec-head-top { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; }
 .sec-head h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
 .sec-head .hint { color: var(--muted); font-size: 13.5px; }
 
@@ -302,6 +303,17 @@ input:checked ~ .chk-txt small { text-decoration: none; }
 .country.br .price { color: var(--teal-ink); }
 .country.ar .price { color: var(--rose-ink); }
 .price-rub { font-weight: 400; font-size: 13px; color: var(--muted); }
+
+/* ---------- Country card (roadmap header) ---------- */
+.country-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 22px; overflow: hidden; }
+.country-card:empty { display: none; }
+.cc-top { display: flex; align-items: center; gap: 12px; padding: 16px 22px; border-bottom: 1px solid var(--line-soft); }
+.cc-flag { display: inline-flex; align-items: center; line-height: 0; }
+.cc-flag .flag-img { width: 34px; height: auto; border-radius: 3px; display: block; box-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 60%, transparent); }
+.cc-flag .ab-flag { width: 34px; height: 22px; display: block; }
+.cc-name { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
+.cc-price { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+
 dl.specs { margin: 0; padding: 8px 22px 18px; }
 dl.specs > div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line-soft); }
 dl.specs > div:first-child { border-top: none; }
@@ -490,10 +502,10 @@ dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
 .promo-banner { font-size: 13px; padding: 10px 14px; margin-top: 12px; background: var(--teal-soft); color: var(--teal-ink); border: 1px solid color-mix(in srgb, var(--teal) 20%, transparent); border-radius: 10px; line-height: 1.45; }
 .promo-banner a { color: var(--teal-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--teal-ink) 40%, transparent); }
 .promo-badge { font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--teal); color: var(--paper); border-radius: 4px; padding: 2px 6px; margin-right: 4px; vertical-align: middle; }
-.cc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.cc-flag { font-size: 32px; line-height: 1; }
-.cc-name { font-size: 20px; font-weight: 800; }
-.cc-price { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-left: auto; }
+.cc-top { gap: 10px; padding: 14px 16px; }
+.cc-flag .flag-img { width: 30px; }
+.cc-flag .ab-flag { width: 30px; height: 20px; }
+.cc-name { font-size: 18px; }
 .csc-name { font-size: 14px; }
 .csc-price { font-size: 12px; }
 }
