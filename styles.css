@@ -484,11 +484,14 @@ footer a { color: var(--accent-ink); }
   .hero-aside { flex-direction: row; align-items: center; align-self: stretch; justify-content: space-between; }
   .tab-btn { font-size: 11px; padding: 8px 12px; }
   .tab-nav { gap: 0; }
-  dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
-  .country-select-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .country-select-card { padding: 14px 10px 12px; }
-  .csc-name { font-size: 14px; }
-  .csc-price { font-size: 12px; }
+dl.specs > div { grid-template-columns: 76px 1fr; gap: 8px; }
+.country-select-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.country-select-card { padding: 14px 10px 12px; }
+.promo-banner { font-size: 13px; padding: 10px 14px; margin-top: 12px; background: var(--teal-soft); color: var(--teal-ink); border: 1px solid color-mix(in srgb, var(--teal) 20%, transparent); border-radius: 10px; line-height: 1.45; }
+.promo-banner a { color: var(--teal-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--teal-ink) 40%, transparent); }
+.promo-badge { font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--teal); color: var(--paper); border-radius: 4px; padding: 2px 6px; margin-right: 4px; vertical-align: middle; }
+.csc-name { font-size: 14px; }
+.csc-price { font-size: 12px; }
 }
 @media (max-width: 480px) {
   .country-select-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }

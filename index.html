@@ -10,7 +10,7 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#F7F9F7" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14262B" media="(prefers-color-scheme: dark)">
-  <link rel="stylesheet" href="./styles.css?v=20260719">
+  <link rel="stylesheet" href="./styles.css?v=20260719b">
 </head>
 <body>
 <div class="wrap">
@@ -75,16 +75,27 @@
     <div class="country-select-grid" id="country-select-grid">
       <!-- Populated by JS from countries.js -->
     </div>
+
+    <div class="promo-banner">
+      <span class="promo-badge">Промокод</span>
+      <b>ПРОСЛЕДУЕТ</b> — скидка 5 000–15 000 ₽ на оформление зарубежной карты
+      (<a href="https://t.me/skyzit_managerbot?start=bloggers_youtube_prosleduet_14_jul_2026" target="_blank" rel="noopener">SkyZit</a>)
+      — удалённо, от 1 дня, по заграну или паспорту РФ.
+    </div>
   </section>
 
   <!-- ==================== ДОРОЖНАЯ КАРТА ==================== -->
   <section id="roadmap-section" style="display:none;">
     <div class="sec-head">
-      <h2>Дорожная карта · <span id="roadmap-country-name"></span></h2>
-      <div class="sec-actions">
-        <span class="hint">отмечай галочками — прогресс сохраняется в&nbsp;браузере</span>
+      <div class="sec-head-top">
+        <h2>Дорожная карта</h2>
         <button class="change-country-btn" id="change-country-btn" type="button">Сменить страну</button>
       </div>
+      <span class="hint">отмечай галочками — прогресс сохраняется в&nbsp;браузере</span>
+    </div>
+
+    <div class="country-card" id="country-card">
+      <!-- Populated by JS: country top + specs -->
     </div>
 
     <div class="timeline" id="timeline">
@@ -113,7 +124,7 @@
   </footer>
 </div>
 
-<script src="./countries.js?v=20260719"></script>
-<script src="./app.js?v=20260719" defer></script>
+<script src="./countries.js?v=20260719b"></script>
+<script src="./app.js?v=20260719b" defer></script>
 </body>
 </html>

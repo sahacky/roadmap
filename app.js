@@ -189,13 +189,13 @@
   var selectSection = document.getElementById("country-select-section");
   var roadmapSection = document.getElementById("roadmap-section");
   var deepSection = document.getElementById("deep-section");
-  var roadmapCountryName = document.getElementById("roadmap-country-name");
-  var changeCountryBtn = document.getElementById("change-country-btn");
   var budgetDisplay = document.getElementById("budget-display");
   var budgetRub = document.getElementById("budget-rub");
   var countryDisplay = document.getElementById("country-display");
   var countryVisa = document.getElementById("country-visa");
   var criticalText = document.getElementById("critical-text");
+  var countryCard = document.getElementById("country-card");
+  var changeCountryBtn = document.getElementById("change-country-btn");
 
   // Build country selection grid
   function buildCountryGrid() {
@@ -251,13 +251,15 @@
     deepSection.style.display = "";
 
     // Update header stats
-    if (roadmapCountryName) roadmapCountryName.textContent = c.name;
     if (countryDisplay) countryDisplay.textContent = c.name;
     if (countryVisa) countryVisa.textContent = c.visa + " · " + c.timezone;
     if (criticalText) {
       criticalText.innerHTML = "<b>" + c.critical + "</b>";
     }
     updateBudgetDisplay();
+
+    // Render country card
+    renderCountryCard(key);
 
     // Render timeline
     renderTimeline(key);
@@ -288,6 +290,8 @@
     // Clear timeline
     var timeline = document.getElementById("timeline");
     if (timeline) timeline.innerHTML = "";
+    // Clear country card
+    if (countryCard) countryCard.innerHTML = "";
   }
 
   if (changeCountryBtn) {
