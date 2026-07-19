@@ -498,7 +498,24 @@
       if (cu.src) cultureHtml += '<div class="deep-src">' + cu.src + '</div>';
     }
 
-    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml + weatherHtml + cultureHtml;
+    // Asylum / deportation (optional)
+    var asylumHtml = "";
+    if (c.asylum) {
+      var a = c.asylum;
+      var riskClass = a.risk === "high" ? "risk-high" : a.risk === "medium" ? "risk-medium" : "risk-low";
+      var riskLabel = a.risk === "high" ? "ВЫСОКИЙ" : a.risk === "medium" ? "СРЕДНИЙ" : "НИЗКИЙ";
+      asylumHtml =
+        '<div class="deep-sub-h">🛡 ' + a.title + '</div>' +
+        '<div class="asylum-block ' + riskClass + '">' +
+        '<div class="asylum-verdict"><span class="asylum-badge ' + riskClass + '">' + riskLabel + ' РИСК</span> ' + a.verdict + '</div>' +
+        '<div class="asylum-grid">' +
+        '<div class="asylum-row"><span class="asylum-k">Договор</span><span class="asylum-v">' + a.treaty + '</span></div>' +
+        '<div class="asylum-row"><span class="asylum-k">Защита</span><span class="asylum-v">' + a.protection + '</span></div>' +
+        '<div class="asylum-row"><span class="asylum-k">Прецедент</span><span class="asylum-v">' + a.precedent + '</span></div>' +
+        '</div></div>';
+    }
+
+    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml + weatherHtml + cultureHtml + asylumHtml;
   }
 
   // ---- Checkboxes ----

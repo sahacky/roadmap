@@ -373,6 +373,23 @@ details.deep:not([open]) > summary .sm-hint::after { content:"нажми, что
 .deep-risk .rv b { color:var(--ink); }
 .deep-src { margin-top:12px; font-size:11px; color:var(--muted); font-family:var(--mono); letter-spacing:.03em; }
 
+/* ---------- Asylum / Deportation block ---------- */
+.asylum-block { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:10px; }
+.asylum-block.risk-high { border-left:4px solid #d32f2f; }
+.asylum-block.risk-medium { border-left:4px solid #f57c00; }
+.asylum-block.risk-low { border-left:4px solid #388e3c; }
+.asylum-verdict { font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:14px; }
+.asylum-verdict b, .asylum-verdict strong { color:var(--ink); }
+.asylum-badge { display:inline-block; font-family:var(--mono); font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border-radius:4px; margin-right:4px; vertical-align:middle; }
+.asylum-badge.risk-high { background:#fde8e8; color:#d32f2f; }
+.asylum-badge.risk-medium { background:#fff3e0; color:#f57c00; }
+.asylum-badge.risk-low { background:#e8f5e9; color:#388e3c; }
+.asylum-grid { display:flex; flex-direction:column; gap:10px; }
+.asylum-row { display:flex; gap:10px; font-size:12.5px; line-height:1.5; }
+.asylum-k { flex:0 0 100px; font-weight:700; color:var(--ink-soft); font-family:var(--mono); letter-spacing:.03em; font-size:11px; text-transform:uppercase; padding-top:1px; }
+.asylum-v { flex:1; color:var(--ink-soft); }
+.asylum-v b { color:var(--ink); }
+
 /* ---------- Weather + Culture (deep sub-blocks) ---------- */
 .deep-sub-h { display:flex; align-items:center; gap:10px; font-size:17px; font-weight:800; letter-spacing:-.01em; color:var(--ink); margin:30px 0 15px; padding:16px 0 0; border-top:2px solid var(--line); }
 .deep-sub-h::before { content:""; width:5px; align-self:stretch; min-height:22px; border-radius:3px; background:var(--accent); }
