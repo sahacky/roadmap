@@ -340,12 +340,20 @@ dl.specs.compact dd { font-size: 13px; }
 
 /* Сворачиваемый блок «Детально по стране» (проверенные данные) */
 details.deep { margin: 6px 20px 20px; }
-details.deep > summary { cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px;
-  font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
-  color:var(--accent-ink); background:var(--accent-soft); border-radius:9px; padding:11px 14px; }
+details.deep > summary { cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:13px; letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+  color:#fff; background:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 55%, #000 12%);
+  border-radius:11px; padding:14px 18px; box-shadow:0 2px 10px color-mix(in srgb, var(--accent) 30%, transparent);
+  transition:filter .15s ease, transform .05s ease; }
+details.deep > summary:hover { filter:brightness(1.06); }
+details.deep > summary:active { transform:translateY(1px); }
 details.deep > summary::-webkit-details-marker { display:none; }
-details.deep > summary::after { content:"▾"; margin-left:auto; transition:transform .2s ease; }
+details.deep > summary .sm-hint { font-family:inherit; font-size:11px; font-weight:600; letter-spacing:.04em;
+  text-transform:none; opacity:.85; margin-left:auto; }
+details.deep > summary::after { content:"▾"; font-size:15px; transition:transform .2s ease; }
 details.deep[open] > summary::after { transform:rotate(180deg); }
+details.deep[open] > summary .sm-hint::after { content:"свернуть"; }
+details.deep:not([open]) > summary .sm-hint::after { content:"нажми, чтобы раскрыть"; }
 .deep-body { padding-top:14px; }
 .deep-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .deep-tiles .tile { border-radius:12px; }
@@ -365,7 +373,8 @@ details.deep[open] > summary::after { transform:rotate(180deg); }
 .deep-src { margin-top:12px; font-size:11px; color:var(--muted); font-family:var(--mono); letter-spacing:.03em; }
 
 /* ---------- Weather + Culture (deep sub-blocks) ---------- */
-.deep-sub-h { font-family:var(--mono); font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--accent-ink); margin:22px 0 12px; padding-top:18px; border-top:1px solid var(--line); }
+.deep-sub-h { display:flex; align-items:center; gap:10px; font-size:17px; font-weight:800; letter-spacing:-.01em; color:var(--ink); margin:30px 0 15px; padding:16px 0 0; border-top:2px solid var(--line); }
+.deep-sub-h::before { content:""; width:5px; align-self:stretch; min-height:22px; border-radius:3px; background:var(--accent); }
 .wx-climate { font-size:13px; color:var(--ink-soft); line-height:1.5; margin-bottom:12px; }
 .wx-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
 .wx-card { background:var(--surface-2); border:1px solid var(--line-soft); border-radius:12px; padding:12px 13px; }
