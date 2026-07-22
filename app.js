@@ -520,7 +520,28 @@
         '</div></div>';
     }
 
-    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml + weatherHtml + cultureHtml + asylumHtml;
+    // Въезд с «токсичной биографией» (optional). Переиспользует стили asylum-блока:
+    // структура та же (вердикт с бейджем + строки «ключ → значение»), плодить CSS незачем.
+    var borderHtml = "";
+    if (c.border) {
+      var br = c.border;
+      var bClass = br.risk === "high" ? "risk-high" : br.risk === "medium" ? "risk-medium" : "risk-low";
+      var bLabel = br.risk === "high" ? "ПРОВЕРИТЬ" : br.risk === "medium" ? "ЕСТЬ НЮАНСЫ" : "ЧИСТО";
+      borderHtml =
+        '<div class="deep-sub-h">🛂 ' + br.title + '</div>' +
+        '<div class="asylum-block ' + bClass + '">' +
+        '<div class="asylum-verdict"><span class="asylum-badge ' + bClass + '">' + bLabel + '</span> ' + br.verdict + '</div>' +
+        '<div class="asylum-grid">' +
+        '<div class="asylum-row"><span class="asylum-k">Крым</span><span class="asylum-v">' + br.crimea + '</span></div>' +
+        '<div class="asylum-row"><span class="asylum-k">ДНР / ЛНР</span><span class="asylum-v">' + br.ldnr + '</span></div>' +
+        '<div class="asylum-row"><span class="asylum-k">Абхазия / Ю. Осетия</span><span class="asylum-v">' + br.abkhazia + '</span></div>' +
+        '<div class="asylum-row"><span class="asylum-k">Украина</span><span class="asylum-v">' + br.ukraine + '</span></div>' +
+        '</div>' +
+        '<div class="deep-src">Решает <b>место выдачи загранпаспорта</b>, а не место рождения. Источники: решение Совета ЕС (дек. 2022) · закон Грузии «Об оккупированных территориях» · визовые гайды 2026</div>' +
+        '</div>';
+    }
+
+    body.innerHTML = tilesHtml + gridHtml + riskHtml + srcHtml + weatherHtml + cultureHtml + asylumHtml + borderHtml;
   }
 
   // ---- Checkboxes ----
