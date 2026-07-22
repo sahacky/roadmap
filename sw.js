@@ -1,6 +1,6 @@
 /* Service worker: офлайн-кэш «оболочки» приложения.
    Бампни CACHE при изменении файлов — старый кэш удалится при активации. */
-const CACHE = "reloc-roadmap-v6";
+const CACHE = "reloc-roadmap-v7";
 const ASSETS = [
   "./",
   "./index.html",

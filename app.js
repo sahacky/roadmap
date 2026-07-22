@@ -478,7 +478,9 @@
           '</div>';
       }
       weatherHtml += '</div>';
-      if (w.hazards) weatherHtml += '<div class="wx-haz"><span class="wx-haz-k">Катаклизмы</span>' + w.hazards + '</div>';
+      // .wx-haz — flex-контейнер, поэтому текст оборачиваем в свой span:
+      // иначе <b> внутри hazards становится отдельным flex-элементом и уезжает в свою колонку.
+      if (w.hazards) weatherHtml += '<div class="wx-haz"><span class="wx-haz-k">Катаклизмы</span><span class="wx-haz-v">' + w.hazards + '</span></div>';
       if (w.src) weatherHtml += '<div class="deep-src">' + w.src + '</div>';
     }
 
