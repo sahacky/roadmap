@@ -444,10 +444,13 @@
     }
     tilesHtml += '</div>';
 
-    // Grid
+    // Grid. Налоги РФ одинаковы для всех стран — блок общий, живёт в RF_TAXES
+    // (countries.js) и подставляется последним пунктом, чтобы не дублировать
+    // длинный текст в каждой стране и править закон в одном месте.
+    var grid = typeof RF_TAXES !== "undefined" ? deep.grid.concat([RF_TAXES]) : deep.grid;
     var gridHtml = '<div class="deep-grid">';
-    for (var j = 0; j < deep.grid.length; j++) {
-      var g = deep.grid[j];
+    for (var j = 0; j < grid.length; j++) {
+      var g = grid[j];
       gridHtml += '<div class="info"><div class="ik">' + g.ik + '</div><div class="iv">' + g.iv + '</div></div>';
     }
     gridHtml += '</div>';
